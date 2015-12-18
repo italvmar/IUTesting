@@ -12,22 +12,23 @@ var boxSize = 100*n;
 numToken = 4;
 //
 rotate = 1;
-//inicializo juego
+//obejtos de piezas para guardar
 var sprites = {
 	token: { sx: numToken*100, sy: 0, w: 100, h: 100}//la figura que recorto del sprite
 };
 
-
+//inicializo el juego
 var startGame = function() {
-	Game.setBoard(0,new MyToken(numToken,1005,0,rotate,sprites));
-	//SpriteSheet.draw(Game.ctx,"token",1005,0,boxSize);
+	Game.setBoard(0,Board());
+	Game.setBoard(1,new MyToken(numToken,1005,0,rotate,"token"));
+	
 }
 window.addEventListener("load", function() {
 	Game.initialize("game",sprites,startGame,boxSize,n);
 });
 
 //actualizo coordenadas de la ficha
-canvas.addEventListener("mousemove", function(e){
-	Game.boards[0].dx = e.clientX;
-	Game.boards[0].dy = e.clientY;
-});
+/*canvas.addEventListener("mousemove", function(e){
+	Game.tokens[0].dx = e.clientX;
+	Game.tokens[0].dy = e.clientY;
+});*/
