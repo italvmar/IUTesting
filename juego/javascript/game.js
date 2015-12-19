@@ -13,13 +13,13 @@ numToken = 0;
 //Array para pintar las fichas activas
 fichasActivas=[];
 
-/*
+
 var rot0 = [];
 var rot1 = [];
 var rot2 = [];
 var rot3 = [];
 var fichasValidas = [rot0,rot1,rot2,rot3];
-*/
+
 function ficha(num, coordx, coordy, rot, token) {
 	    this.num = num;
 	    this.coord = [coordx,coordy];
@@ -70,12 +70,18 @@ var startGame = function() {
     fichasActivas.push(fichatest);
    
     /////////////////////////////////////////////////////////////////////////////////
+    var fichapos= new ficha(18,100,0,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(18,0,100,0,0);
+    fichasValidas[1].push(fichapos);
+    var fichapos= new ficha(18,300,300,0,0);
+    fichasValidas[3].push(fichapos);
+    var fichapos= new ficha(18,100,200,0,0);
+    fichasValidas[3].push(fichapos);
 
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-	
+   	////////////////////////////////////////////////////////////////////////////////
 	Game.setBoard(0,new MyActivas(fichasActivas));
+	Game.setBoard(1,new MyValidas(fichasValidas));
 
 	//Alvaro:
 	//Interesante conservar estas lineas para pintar el fondo cuando

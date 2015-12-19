@@ -101,6 +101,18 @@ function MyActivas(fichasActivas){
   }
 };
 
+function MyValidas(fichasValidas){
+
+  this.draw = function(ctx,boxSize){
+    for (i=0; i<fichasValidas.length; i++){
+      for (j=0; j<fichasValidas[i].length; j++){
+        SpriteSheet.draw(ctx,fichasValidas[i][j].num,fichasValidas[i][j].coord[0],
+                          fichasValidas[i][j].coord[1],boxSize);
+      }
+    }
+  }
+}
+
 function MyToken(num,x,y,rotate,sprite){
   this.numToken = num;
   this.dx = x;
