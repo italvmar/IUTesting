@@ -80,8 +80,13 @@ var startGame = function() {
     fichasValidas[3].push(fichapos);
 
    	////////////////////////////////////////////////////////////////////////////////
+   	var fichaActual= new ficha(02,0,0,0,0);
+
+   	////////////////////////////////////////////////////////////////////////////////
 	Game.setBoard(0,new MyActivas(fichasActivas));
 	Game.setBoard(1,new MyValidas(fichasValidas));
+	Game.setBoard(3,new MyActual(fichaActual));
+
 
 	//Alvaro:
 	//Interesante conservar estas lineas para pintar el fondo cuando

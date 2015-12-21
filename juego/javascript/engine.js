@@ -40,6 +40,7 @@ var Game = new function() {
         console.log(boards.length);
         console.log(boards[i].length)
         boards[i].draw(Game.ctx,boxSize);
+        boards[i].step(Game.ctx);
       }
     }
     setTimeout(Game.loop,30,boxSize);
@@ -99,6 +100,8 @@ function MyActivas(fichasActivas){
     }
     
   }
+   this.step = function(ctx) {
+   }
 };
 
 function MyValidas(fichasValidas){
@@ -111,6 +114,37 @@ function MyValidas(fichasValidas){
       }
     }
   }
+
+   this.step = function(ctx) {
+    }
+}
+
+function MyActual(fichaActual){
+  this.draw = function(ctx,boxSize){
+    console.log("llamo al draw del spritesheet");
+    console.log(boxSize);
+    SpriteSheet.draw(ctx,fichaActual.num,fichaActual.coord[0],
+        fichaActual.coord[1],boxSize);
+  }
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+
+  this.step = function(x,y) {
+    canvas.addEventListener('mousemove', function(evt) {
+        var pos = getMousePos(canvas, evt);
+        fichaActual.coord[0]=pos.x;
+        fichaActual.coord[1]=pos.y;
+      },false);
+    
+    
+  }
+
+
 }
 
 function MyToken(num,x,y,rotate,sprite){
@@ -125,4 +159,8 @@ function MyToken(num,x,y,rotate,sprite){
     console.log(boxSize);
     SpriteSheet.draw(ctx,this.sprite,this.dx,this.dy,boxSize);
   }
+   this.step = function(ctx) {
+   
+  }
+
 };
