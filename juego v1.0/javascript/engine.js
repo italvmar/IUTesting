@@ -1,4 +1,3 @@
-
 //factor para agrandar el cuadrado
 var n = 0.75;
 //tamaño cuadrado
@@ -22,7 +21,7 @@ var SpriteSheet = new function() {
 
 var Game = new function() {
 
-  this.initialize = function(canvasElementId,sprite_data,callback,boxSize,n) {
+  this.initialize = function(canvasElementId,sprite_data,callback) {
 
     this.canvas = document.getElementById(canvasElementId);
     this.width = this.canvas.width;
@@ -78,11 +77,8 @@ function MyToken(num,x,y,rotate,sprite){
 
   this.step = function(tokens) {
     canvas.addEventListener("mousemove", function(e){
-      console.log("muevo");
-      tokens[1].dx = e.clientX;
-      tokens[1].dy = e.clientY;
-      console.log("modifico");
+      tokens[1].dx = e.clientX-boxSize/2;
+      tokens[1].dy = e.clientY-boxSize/2;
     });
-    console.log("x = "+this.dx +",y = "+ this.dy);
   }
 };
