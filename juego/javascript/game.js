@@ -7,6 +7,9 @@ var endTurn = false;
 var n = 0.75;
 //tamaño cuadrado
 var boxSize = 100*n;
+var fondoSize=1000;
+var fichFondo=3000;
+var fichAzul=2000;
 
 //numero de pieza que toca
 numToken = 0;
@@ -31,14 +34,24 @@ function ficha(num, coordx, coordy, rot, token) {
 //
 rotate = 1;
 //obejtos de piezas para guardar
+//Creamos todas las piezas, y sus rotaciones
+//Asi como el tablero y la pieza azul auxiliar
+//TODO: Pintarle una interrogacion o algo para
+//que no quede tan feo
 var sprites = {
+	//fondo
+	3000: {sx: 0, sy: 400, w: 590, h: 300},
+	//Pieza Azul
+	2000: {sx: 398, sy: 704, w: 100, h: 100},
+
+//Fichas sin rotar
 	01: { sx: 0*100, sy: 0, w: 100, h: 100},
 	02: { sx: 1*100, sy: 0, w: 100, h: 100},
 	03: { sx: 2*100, sy: 0, w: 100, h: 100},
 	04: { sx: 3*100, sy: 0, w: 100, h: 100},
 	05: { sx: 4*100, sy: 0, w: 100, h: 100},
 	06: { sx: 5*100, sy: 0, w: 100, h: 100},
-	07: { sx: 0*100, sy: 0, w: 100, h: 100},
+	07: { sx: 0*100, sy: 1*100, w: 100, h: 100},
 	08: { sx: 1*100, sy: 1*100, w: 100, h: 100},
 	09: { sx: 2*100, sy: 1*100, w: 100, h: 100},
 	10: { sx: 3*100, sy: 1*100, w: 100, h: 100},
@@ -55,44 +68,132 @@ var sprites = {
 	21: { sx: 2*100, sy: 3*100, w: 100, h: 100},
 	22: { sx: 3*100, sy: 3*100, w: 100, h: 100},
 	23: { sx: 4*100, sy: 3*100, w: 100, h: 100},
-	24: { sx: 5*100, sy: 3*100, w: 100, h: 100}//la figura que recorto del sprite
+	24: { sx: 5*100, sy: 3*100, w: 100, h: 100},
+
+///Fichas rotadas hacia la derecha, el 1 antes del numero indica la rotacion
+//Asi solo hay que sumar y restar para pasar de un sprite a otro
+// ( ͡° ͜ʖ ͡°)
+
+//Los numeros pequeños que suman y restan son correcciones sobre el spritesheet
+	119: { sx: 0*100, sy: 700, w: 100, h: 100},
+	113: { sx: 1*100, sy: 700, w: 100, h: 100},
+	107: { sx: 2*100, sy: 700, w: 100, h: 100},
+	101: { sx: 3*100 -2, sy: 700, w: 100, h: 100},
+	120: { sx: 0*100, sy: 1*100+ 700, w: 100, h: 100},
+	114: { sx: 1*100, sy: 1*100+700, w: 100, h: 100},
+	108: { sx: 2*100, sy: 1*100+700, w: 100, h: 100},
+	102: { sx: 3*100 -2, sy: 1*100 + 700, w: 100, h: 100},
+	121: { sx: 0*100, sy: 2*100 + 700, w: 100, h: 100},
+	115: { sx: 1*100, sy: 2*100 + 700, w: 100, h: 100},
+	109: { sx: 2*100, sy: 2*100 + 700, w: 100, h: 100},
+	103: { sx: 3*100-2, sy: 2*100 + 700+3, w: 100, h: 100},
+	122: { sx: 0*100-1, sy: 3*100 + 700+1, w: 100, h: 100},
+	116: { sx: 1*100, sy: 3*100 + 700, w: 100, h: 100},
+	110: { sx: 2*100, sy: 3*100 + 700, w: 100, h: 100},
+	104: { sx: 3*100, sy: 3*100 + 700, w: 100, h: 100},
+	123: { sx: 0*100, sy: 4*100 + 700, w: 100, h: 100},
+	117: { sx: 1*100, sy: 4*100 + 700, w: 100, h: 100},
+	111: { sx: 2*100, sy: 4*100 + 700, w: 100, h: 100},
+	105: { sx: 3*100, sy: 4*100 + 700, w: 100, h: 100},
+	124: { sx: 0*100-2, sy: 5*100 + 700-1, w: 100, h: 100},
+	118: { sx: 1*100, sy: 5*100 + 700, w: 100, h: 100},
+	112: { sx: 2*100-1, sy: 5*100 + 700 -1, w: 100, h: 100},
+	106: { sx: 3*100, sy: 5*100 + 700+2, w: 100, h: 100},
+
+///Fichas rotadas hacia abajo, el 2 antes del numero indica la rotacion
+//Asi solo hay que sumar y restar 100 para pasar de un sprite a otro
+// ( ͡° ͜ʖ ͡°)
+
+	224: { sx: 0*100, sy: 0 + 1300-2, w: 100, h: 100},
+	223: { sx: 1*100-2, sy: 0+ 1300-1, w: 100, h: 100},
+	222: { sx: 2*100-3, sy: 0+ 1300-2, w: 100, h: 100},
+	221: { sx: 3*100-2, sy: 0+ 1300-2, w: 100, h: 100},
+	220: { sx: 4*100-2, sy: 0+ 1300-1, w: 100, h: 100},
+	219: { sx: 5*100, sy: 0+ 1300-1, w: 100, h: 100},
+	218: { sx: 0*100-2, sy: 1*100+ 1300-1, w: 100, h: 100},
+	217: { sx: 1*100-2, sy: 1*100+ 1300-1, w: 100, h: 100},
+	216: { sx: 2*100-2, sy: 1*100+ 1300-1, w: 100, h: 100},
+	215: { sx: 3*100-2, sy: 1*100+ 1300-1, w: 100, h: 100},
+	214: { sx: 4*100, sy: 1*100+ 1300-1, w: 100, h: 100},
+	213: { sx: 5*100, sy: 1*100+ 1300-1, w: 100, h: 100},
+	212: { sx: 0*100-2, sy: 2*100+ 1300-2, w: 100, h: 100},
+	211: { sx: 1*100, sy: 2*100+ 1300-2, w: 100, h: 100},
+	210: { sx: 2*100, sy: 2*100+ 1300-2, w: 100, h: 100},
+	209: { sx: 3*100-3, sy: 2*100+ 1300-1, w: 100, h: 100},
+	208: { sx: 4*100, sy: 2*100+ 1300-2, w: 100, h: 100},
+	207: { sx: 5*100+1, sy: 2*100+ 1300-1, w: 100, h: 100},
+	206: { sx: 0*100-4, sy: 3*100+ 1300-2, w: 100, h: 100},
+	205: { sx: 1*100, sy: 3*100+ 1300-3, w: 100, h: 100},
+	204: { sx: 2*100-3, sy: 3*100+ 1300-3, w: 100, h: 100},
+	203: { sx: 3*100-5, sy: 3*100+ 1300 -3, w: 100, h: 100},
+	202: { sx: 4*100, sy: 3*100+ 1300 -3, w: 100, h: 100},
+	201: { sx: 5*100, sy: 3*100+ 1300 -3, w: 100, h: 100},
+
+///Fichas rotadas hacia abajo, el 3 antes del numero indica la rotacion
+//Asi solo hay que sumar y restar 100 para pasar de un sprite a otro
+// ( ͡° ͜ʖ ͡°)
+
+	306: { sx: 0*100, sy: 1700-6, w: 100, h: 100},
+	312: { sx: 1*100, sy: 1700-4, w: 100, h: 100},
+	318: { sx: 2*100, sy: 1700-4, w: 100, h: 100},
+	324: { sx: 3*100-1, sy: 1700-4, w: 100, h: 100},
+	305: { sx: 0*100, sy: 1*100+ 1700 -8, w: 100, h: 100},
+	311: { sx: 1*100, sy: 1*100+1700-7, w: 100, h: 100},
+	317: { sx: 2*100, sy: 1*100+1700-6, w: 100, h: 100},
+	323: { sx: 3*100, sy: 1*100 + 1700-6, w: 100, h: 100},
+	304: { sx: 0*100, sy: 2*100 + 1700-6, w: 100, h: 100},
+	310: { sx: 1*100, sy: 2*100 + 1700-6, w: 100, h: 100},
+	316: { sx: 2*100, sy: 2*100 + 1700-6, w: 100, h: 100},
+	322: { sx: 3*100, sy: 2*100 + 1700-6, w: 100, h: 100},
+	303: { sx: 0*100, sy: 3*100 + 1700-8, w: 100, h: 100},
+	309: { sx: 1*100, sy: 3*100 + 1700-6, w: 100, h: 100},
+	315: { sx: 2*100, sy: 3*100 + 1700-6, w: 100, h: 100},
+	321: { sx: 3*100, sy: 3*100 + 1700-7, w: 100, h: 100},
+	302: { sx: 0*100, sy: 4*100 + 1700, w: 100, h: 100},
+	308: { sx: 1*100, sy: 4*100 + 1700-6, w: 100, h: 100},
+	314: { sx: 2*100, sy: 4*100 + 1700-6, w: 100, h: 100},
+	320: { sx: 3*100, sy: 4*100 + 1700-8, w: 100, h: 100},
+	301: { sx: 0*100, sy: 5*100 + 1700, w: 100, h: 100},
+	307: { sx: 1*100, sy: 5*100 + 1700, w: 100, h: 100},
+	313: { sx: 2*100, sy: 5*100 + 1700-8, w: 100, h: 100},
+	319: { sx: 3*100, sy: 5*100 + 1700-6, w: 100, h: 100},
 };
 
 //inicializo el juego
 var startGame = function() {
 
 	 ///////////////////////////METO FICHAS TEMPORALES PARA IR TOQUETEANDO////////////
-    var fichatest = new ficha(01,0,0,0,0);
+    var fichatest = new ficha(24,0,0,0,0);
     fichasActivas.push(fichatest);
-    var fichatest = new  ficha(11,100,100,1,0);
+    var fichatest = new  ficha(124,100,100,1,0);
     fichasActivas.push(fichatest);
-    var fichatest= new  ficha(22,200,250,2,0);
+    var fichatest= new  ficha(224,200,200,2,0);
+    fichasActivas.push(fichatest);
+    var fichatest= new  ficha(324,300,300,2,0);
     fichasActivas.push(fichatest);
    
     /////////////////////////////////////////////////////////////////////////////////
-    var fichapos= new ficha(18,100,0,0,0);
+    var fichapos= new ficha(fichAzul,100,0,0,0);
     fichasValidas[0].push(fichapos);
-    var fichapos= new ficha(18,0,100,0,0);
+    var fichapos= new ficha(fichAzul,0,100,0,0);
     fichasValidas[1].push(fichapos);
-    var fichapos= new ficha(18,300,300,0,0);
+    var fichapos= new ficha(fichAzul,400,400,0,0);
     fichasValidas[3].push(fichapos);
-    var fichapos= new ficha(18,100,200,0,0);
+    var fichapos= new ficha(fichAzul,100,200,0,0);
     fichasValidas[3].push(fichapos);
 
    	////////////////////////////////////////////////////////////////////////////////
    	var fichaActual= new ficha(02,0,0,0,0);
 
+
    	////////////////////////////////////////////////////////////////////////////////
-	Game.setBoard(0,new MyActivas(fichasActivas));
-	Game.setBoard(1,new MyValidas(fichasValidas));
+   	var fichaFondo= new ficha(fichFondo,0,0,0,0);
+
+   	Game.setBoard(0,new MyFondo(fichaFondo));
+	Game.setBoard(1,new MyActivas(fichasActivas));
+	Game.setBoard(2,new MyValidas(fichasValidas));
 	Game.setBoard(3,new MyActual(fichaActual));
 
-
-	//Alvaro:
-	//Interesante conservar estas lineas para pintar el fondo cuando
-	//Este dentro del SpriteSheet
-	//Game.setBoard(0,Board());
-	//Game.setBoard(1,new MyToken(numToken,1005,0,rotate,15));
 	
 }
 window.addEventListener("load", function() {

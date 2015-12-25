@@ -22,6 +22,7 @@ var Game = new function() {
     this.ctx = this.canvas.getContext && this.canvas.getContext('2d');
     if(!this.ctx) { return alert("Please upgrade your browser to play"); }
 
+    //TODO
   //Llamariamos al reconocimiento de teclas
   //this.setupInput();
     this.loop(boxSize,n);
@@ -35,6 +36,10 @@ var Game = new function() {
   //Podria ponerse directamente la constante
   this.loop = function(boxSize) {
    // Board.draw(Game.ctx,boxSize,n);
+
+   //Este loop nos pinta los tableros a cada pasada
+   //Tambien nos actualiza con step los tableros
+   //que tienen que ser actualizados (MyActual)
     for(var i=0, len = boards.length;i<len;i++) {
       if(boards[i]) {
         console.log(boards.length);
@@ -45,14 +50,17 @@ var Game = new function() {
     }
     setTimeout(Game.loop,30,boxSize);
   };
-
+  //Funcion que nos mete los tableros dentro del array
+  //De tableros, se llama desde game.
   this.setBoard = function(num,board) {
     boards[num] = board;
     console.log("sets boards");
     console.log(boards.length) ;
   };
 };
-
+//Inicializamos el SpriteSheeet
+//Que como objeto que es, se encarga
+//de dibujar los pequeños pedacitos de si mismo
 var SpriteSheet = new function() {
   this.map = { };
   this.load = function(spriteData,callback) {
@@ -63,8 +71,6 @@ var SpriteSheet = new function() {
   };
   this.draw = function(ctx,sprite,x,y,boxSize) {
     var s = this.map[sprite];
-    console.log("dibujo");
-    console.log("ox: "+s.sx+" oy: "+s.sy+" dx: "+x+" dy: "+y+" alto: "+ s.h+ " ancho "+s.w);
      console.log(this.image);
     ctx.drawImage(this.image,s.sx ,s.sy,s.w, s.h,x,y,boxSize,boxSize);
     console.log("termino dibujo");
@@ -88,7 +94,8 @@ var SpriteSheet = new function() {
     ctx.drawImage(this.image,this.dx,this.dy,this.w,this.h);
   }
 };*/
-
+//Tablero en el que guardamos las fichas activas que 
+//Hemos colocado 
 function MyActivas(fichasActivas){
 
   this.draw = function(ctx,boxSize){
@@ -103,7 +110,8 @@ function MyActivas(fichasActivas){
    this.step = function(ctx) {
    }
 };
-
+//Tablero en el que colocamos las rotaciones posibles
+//Dibuja piezas azules
 function MyValidas(fichasValidas){
 
   this.draw = function(ctx,boxSize){
@@ -118,7 +126,8 @@ function MyValidas(fichasValidas){
    this.step = function(ctx) {
     }
 }
-
+//Tablero que guarda la ficha actual seleccionada y la pinta dinamicamente
+//en la posicion en la que está el cursor
 function MyActual(fichaActual){
   this.draw = function(ctx,boxSize){
     console.log("llamo al draw del spritesheet");
@@ -126,6 +135,9 @@ function MyActual(fichaActual){
     SpriteSheet.draw(ctx,fichaActual.num,fichaActual.coord[0],
         fichaActual.coord[1],boxSize);
   }
+  //TODO: Mirar donde hacer bien las declaraciones, de los eventos de canvas
+
+  //ESTA DANDO PROBLEMAS DE RECURSOS
       function getMousePos(canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         return {
@@ -137,8 +149,8 @@ function MyActual(fichaActual){
   this.step = function(x,y) {
     canvas.addEventListener('mousemove', function(evt) {
         var pos = getMousePos(canvas, evt);
-        fichaActual.coord[0]=pos.x;
-        fichaActual.coord[1]=pos.y;
+        fichaActual.coord[0]=pos.x - boxSize/2;
+        fichaActual.coord[1]=pos.y- boxSize/2;
       },false);
     
     
@@ -146,21 +158,20 @@ function MyActual(fichaActual){
 
 
 }
-
-function MyToken(num,x,y,rotate,sprite){
-  this.numToken = num;
-  this.dx = x;
-  this.dy = y;
-  this.rotate = rotate;
-  this.sprite = sprite;
-
+//Este tablero guarda la imagen de fondo 
+//fondoSize cambia el tamaño del fondo
+function MyFondo(fondo){
   this.draw = function(ctx,boxSize){
-    console.log("llamo al draw del spritesheet");
-    console.log(boxSize);
-    SpriteSheet.draw(ctx,this.sprite,this.dx,this.dy,boxSize);
+    console.log("llamo al draw del fondo");
+    SpriteSheet.draw(ctx,fondo.num,fondo.coord[0],
+        fondo.coord[1],fondoSize);
   }
-   this.step = function(ctx) {
-   
+ 
+
+  this.step = function(x,y) {
+    
   }
 
-};
+
+}
+
