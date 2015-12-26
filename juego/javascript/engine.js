@@ -4,6 +4,7 @@ var Game = new function() {
 
 //Declaramos nuestro array de tableros
 //Meteremos aqui los tableros por el orden que deben ser pintados 
+  var pressed=false;
   var boards = [];
   //Este metodo es util para trazar el codigo
   this.countboards= function(){
@@ -31,7 +32,27 @@ var Game = new function() {
 
    
   };
+  /*
+  // Handle Input
+  var KEY_CODES = { 37:'left', 39:'right', 32 :'fire' };
+  this.keys = {};
 
+  this.setupInput = function() {
+    window.addEventListener('keydown',function(e) {
+      if(KEY_CODES[event.keyCode]) {
+       Game.keys[KEY_CODES[event.keyCode]] = true;
+       e.preventDefault();
+      }
+    },false);
+
+    window.addEventListener('keyup',function(e) {
+      if(KEY_CODES[event.keyCode]) {
+       Game.keys[KEY_CODES[event.keyCode]] = false; 
+       e.preventDefault();
+      }
+    },false);
+  }
+*/
   //TODO boxsize necesario?
   //Podria ponerse directamente la constante
   this.loop = function(boxSize) {
@@ -42,8 +63,7 @@ var Game = new function() {
    //que tienen que ser actualizados (MyActual)
     for(var i=0, len = boards.length;i<len;i++) {
       if(boards[i]) {
-        console.log(boards.length);
-        console.log(boards[i].length)
+        
         boards[i].draw(Game.ctx,boxSize);
         boards[i].step(Game.ctx);
       }
@@ -54,8 +74,7 @@ var Game = new function() {
   //De tableros, se llama desde game.
   this.setBoard = function(num,board) {
     boards[num] = board;
-    console.log("sets boards");
-    console.log(boards.length) ;
+   
   };
 };
 //Inicializamos el SpriteSheeet
@@ -71,9 +90,9 @@ var SpriteSheet = new function() {
   };
   this.draw = function(ctx,sprite,x,y,boxSize) {
     var s = this.map[sprite];
-     console.log(this.image);
+     
     ctx.drawImage(this.image,s.sx ,s.sy,s.w, s.h,x,y,boxSize,boxSize);
-    console.log("termino dibujo");
+    
   };
 };
 
@@ -101,7 +120,7 @@ function MyActivas(fichasActivas){
   this.draw = function(ctx,boxSize){
 
     for (i = 0; i < fichasActivas.length; i++) {
-      console.log(fichasActivas.length)
+     
       SpriteSheet.draw(ctx,fichasActivas[i].num,fichasActivas[i].coord[0],
                           fichasActivas[i].coord[1],boxSize);
     }
@@ -130,8 +149,6 @@ function MyValidas(fichasValidas){
 //en la posicion en la que está el cursor
 function MyActual(fichaActual){
   this.draw = function(ctx,boxSize){
-    console.log("llamo al draw del spritesheet");
-    console.log(boxSize);
     SpriteSheet.draw(ctx,fichaActual.num,fichaActual.coord[0],
         fichaActual.coord[1],boxSize);
   }
@@ -147,6 +164,32 @@ function MyActual(fichaActual){
       }
 
   this.step = function(x,y) {
+
+    document.addEventListener('keydown',this.check,true);
+
+    function check(e) {
+
+     var code = e.keyCode;    
+        if(code ==37) { 
+      console.log("izquierda pressionada");
+      if (fichaActual.rot!=0){
+        fichaActual.rot=fichaActual.rot -1;
+        fichaActual.num=fichaActual.num -100;
+        pressed=true;
+      }
+     
+    }else if(code=39) { 
+      console.log("derecha pressionada");
+     if (fichaActual.rot!=3){
+        fichaActual.rot=fichaActual.rot +1;
+        fichaActual.num=fichaActual.num +100;
+        pressed=true;
+      }
+    }else { 
+      pressed=false;
+    }
+  }
+
     canvas.addEventListener('mousemove', function(evt) {
         var pos = getMousePos(canvas, evt);
         fichaActual.coord[0]=pos.x - boxSize/2;
@@ -162,7 +205,7 @@ function MyActual(fichaActual){
 //fondoSize cambia el tamaño del fondo
 function MyFondo(fondo){
   this.draw = function(ctx,boxSize){
-    console.log("llamo al draw del fondo");
+    
     SpriteSheet.draw(ctx,fondo.num,fondo.coord[0],
         fondo.coord[1],fondoSize);
   }
