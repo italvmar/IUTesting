@@ -23,21 +23,35 @@ var Game = new function() {
     this.ctx = this.canvas.getContext && this.canvas.getContext('2d');
     if(!this.ctx) { return alert("Please upgrade your browser to play"); }
 
-    //TODO
-  //Llamariamos al reconocimiento de teclas
-  //this.setupInput();
+   
+  
+  this.setupInput();
     this.loop(boxSize,n);
     SpriteSheet.load(sprite_data,callback);
     //Board.load(callback);
 
    
   };
-  /*
-  // Handle Input
+  
+   //
+   //    PARA PEDRO:
+   //
+   //
+   //
+   //     Esto esta como en la practica y da errores de que no esta
+    //    Definido, ademas, tampoco funciona en el 
+    //                   tutorial corriendo en firefox t
+   //
+   //
+   //
+   //
+   //
+
   var KEY_CODES = { 37:'left', 39:'right', 32 :'fire' };
   this.keys = {};
 
   this.setupInput = function() {
+
     window.addEventListener('keydown',function(e) {
       if(KEY_CODES[event.keyCode]) {
        Game.keys[KEY_CODES[event.keyCode]] = true;
@@ -52,7 +66,7 @@ var Game = new function() {
       }
     },false);
   }
-*/
+  
   //TODO boxsize necesario?
   //Podria ponerse directamente la constante
   this.loop = function(boxSize) {
@@ -164,8 +178,21 @@ function MyActual(fichaActual){
       }
 
   this.step = function(x,y) {
+    //
+    //
+    //    PARA PEDRO
+    //
+    //     He estado trasteando con los event listeners
+    //        Fuera de como esta hecho en el tutorial y 
+    //        no da ningun error por la consola, 
+    //        simplemente los ignora
+    //    
+    //
+    //
+    //
+    //
 
-    document.addEventListener('keydown',this.check,true);
+   /* window.addEventListener('keydown',this.check,true);
 
     function check(e) {
 
@@ -189,7 +216,52 @@ function MyActual(fichaActual){
       pressed=false;
     }
   }
+*/
+//
+    //
+    //    PARA PEDRO
+    //
+    //     
+    //        Esto esta hecho tomando el ejemplo del tutorial
+    //        
+    //        
+    //    
+    //
+    //
+    //
+    //
+    if(Game.keys['left']) { 
+      console.log("izquierda pressionada");
+      if (fichaActual.rot!=0){
+        fichaActual.rot=fichaActual.rot -1;
+        fichaActual.num=fichaActual.num -100;
+        pressed=true;
+      }
+     
+    }else if(Game.keys['right']) { 
+      console.log("derecha pressionada");
+     if (fichaActual.rot!=3){
+        fichaActual.rot=fichaActual.rot +1;
+        fichaActual.num=fichaActual.num +100;
+        pressed=true;
+      }
+    }else { 
+      pressed=false;
+    }
 
+    //
+    //
+    //    PARA PEDRO
+    //
+    //     Esto es lo que esta dando problemas de recursos
+    //        
+    //        
+    //        
+    //    
+    //
+    //
+    //
+    //
     canvas.addEventListener('mousemove', function(evt) {
         var pos = getMousePos(canvas, evt);
         fichaActual.coord[0]=pos.x - boxSize/2;
