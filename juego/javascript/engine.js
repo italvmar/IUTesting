@@ -89,6 +89,8 @@ var Game = new function() {
         if (checkValida(nuevaFicha)){
           console.log("ES VALIDA")
           boards[2].add(nuevaFicha);     
+        }else{
+           alert("Ficha no valida!");
         }
       }
       
@@ -265,12 +267,9 @@ function MyFondo(fondo){
     SpriteSheet.draw(ctx,fondo.num,fondo.coord[0],
         fondo.coord[1],fondoSize);
   }
- 
-
-  this.step = function(x,y) {
+   this.step = function(x,y) {
     
   }
-
 
 }
 
