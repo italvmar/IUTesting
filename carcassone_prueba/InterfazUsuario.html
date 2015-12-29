@@ -1,0 +1,25 @@
+
+<head>
+	<title>CARCASSONNE</title>
+</head>
+
+<body>
+	<h1>CARCASSONNE</h1>
+	
+	{{>game}}
+</body>
+	
+<template name="game">
+	{{#if pickTile}}
+		<br><button type= "submit" id="PickTile" >Dame una ficha</button>
+	{{/if}}
+	
+	{{#if rotateTile}}
+		<br><button type= "submit" id="RotateTile" > Rotar </button>
+		<br><button type= "submit" id="Ok" >Terminar</button>
+	{{/if}}
+	
+	{{#if followers}}
+		<br><button type= "submit" id="Followers" >Followers</button>
+	{{/if}}
+</template>
