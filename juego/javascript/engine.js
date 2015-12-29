@@ -45,6 +45,10 @@ var Game = new function() {
     }
 
   
+    //Dentro de esta funcion que inicializamos en el initialize guardamos
+    //todos los eventos que pueden ir surgiendonos como los de raton o teclado
+    //tambien las cosas que tienen que hacer esos eventos sobre las piezas
+    //o las estructuras de datos
 
   this.setupInput = function() {
 
@@ -205,6 +209,7 @@ function MyValidas(fichasValidas){
 
   this.draw = function(ctx,boxSize){
     for (i=0; i<fichasValidas.length; i++){
+      //Solo pintamos las de la rotacion que nos interesa
        if(i == fichaActual.rot ){
           for (j=0; j<fichasValidas[i].length; j++){
 
@@ -245,8 +250,8 @@ function MyActual(fichaActual){
     document.addEventListener('mousemove',actPosition ,false);
     function actPosition(evt) {
         var pos = getMousePos(canvas, evt);
-        fichaActual.coord[0]=pos.x - boxSize/2;
-        fichaActual.coord[1]=pos.y- boxSize/2;
+        fichaActual.coord[0]=pos.x - anchoficha/2;
+        fichaActual.coord[1]=pos.y- altoficha/2;
     }        
   }
 

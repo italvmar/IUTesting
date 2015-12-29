@@ -7,14 +7,14 @@ var endTurn = false;
 var n = 0.75;
 //tamaño cuadrado
 var boxSize = 100*n;
-var fondoSize=1000;
+var fondoSize=2000;
 
 //Codigo de los sprites del fondo y el sprite Azul
 var fichFondo=3000;
 var fichAzul=2000;
 
 //Valores iniciales de tamaño de fichas y fondo
-var cantfichas=100;
+var cantfichas=150;
 var anchoficha;
 var altoficha;
 
@@ -36,6 +36,7 @@ numToken = 0;
 fichasActivas=[];
 
 //Array bidimensional para guardar las rotaciones posibles
+//Exactamente el que nos va a pasar logica
 var rot0 = [];
 var rot1 = [];
 var rot2 = [];
@@ -43,7 +44,8 @@ var rot3 = [];
 var fichasValidas = [rot0,rot1,rot2,rot3];
 
 
-
+//Hecha segun las exigencias de logica, es lo que vamos 
+//A pasarles cuando la coloquemos
 function ficha(num, coordx, coordy, rot, token) {
 	    this.num = num;
 	    this.coord = [coordx,coordy];
@@ -189,11 +191,11 @@ var startGame = function() {
 	 ///////////////////////////METO FICHAS TEMPORALES PARA IR TOQUETEANDO////////////
     var fichatest = new ficha(24,0,0,0,0);
     fichasActivas.push(fichatest);
-    var fichatest = new  ficha(124,100,100,1,0);
+    var fichatest = new  ficha(124,1*altoficha,1*anchoficha,1,0);
     fichasActivas.push(fichatest);
-    var fichatest= new  ficha(224,200,200,2,0);
+    var fichatest= new  ficha(224,2*altoficha,2*anchoficha,2,0);
     fichasActivas.push(fichatest);
-    var fichatest= new  ficha(324,300,300,2,0);
+    var fichatest= new  ficha(324,3*altoficha,3*anchoficha,3,0);
     fichasActivas.push(fichatest);
    
     ///////////////////////////Meto rotaciones posibles para ir combrobando///////////
@@ -206,20 +208,20 @@ var startGame = function() {
     var fichapos= new ficha(fichAzul,1,2,0,0);
     fichasValidas[0].push(fichapos);
     var fichapos= new ficha(fichAzul,2,0,0,0);
-    fichasValidas[0].push(fichapos);
+    fichasValidas[2].push(fichapos);
     var fichapos= new ficha(fichAzul,0,2,0,0);
     fichasValidas[0].push(fichapos);
     var fichapos= new ficha(fichAzul,3,6,0,0);
-    fichasValidas[0].push(fichapos);
+    fichasValidas[1].push(fichapos);
     var fichapos= new ficha(fichAzul,1,3,0,0);
     fichasValidas[0].push(fichapos);
 
     var fichapos= new ficha(fichAzul,7,2,0,0);
-    fichasValidas[0].push(fichapos);
+    fichasValidas[2].push(fichapos);
     var fichapos= new ficha(fichAzul,6,4,0,0);
-    fichasValidas[0].push(fichapos);
+    fichasValidas[3].push(fichapos);
     var fichapos= new ficha(fichAzul,6,3,0,0);
-    fichasValidas[0].push(fichapos);
+    fichasValidas[2].push(fichapos);
     var fichapos= new ficha(fichAzul,2,7,0,0);
     fichasValidas[0].push(fichapos);
 
