@@ -42,8 +42,7 @@ numToken =  ((Math.round(Math.random()*23))+1).toString();
 var startGame = function() {
 	Game.setBoard(0,new Background(0,0,2000,2000,"fondo"));
 	Game.setBoard(1,FixedTokens);
-	//console.log(FixedTokens.tokens);
-	Game.setBoard(2,new ActualToken(numToken,1005,0,rotate,numToken));
+	Game.setBoard(2,new CurrentToken(1005,0,rotate,numToken));
 }
 window.addEventListener("load", function() {
 	Game.initialize("game",sprites,startGame);
