@@ -8,20 +8,41 @@ var n = 0.75;
 //tamaño cuadrado
 var boxSize = 100*n;
 var fondoSize=1000;
+
+//Codigo de los sprites del fondo y el sprite Azul
 var fichFondo=3000;
 var fichAzul=2000;
 
+//Valores iniciales de tamaño de fichas y fondo
+var cantfichas=100;
+var anchoficha;
+var altoficha;
+
+//Util para los eventos de coger posiciones de puntero de raton
+var rect = canvas.getBoundingClientRect();
+
+//inicializamos el click 
+var click=false;
+
+anchoficha= canvas.width/cantfichas;
+    console.log(anchoficha)
+altoficha= canvas.height/cantfichas;
+    console.log(altoficha)
+
 //numero de pieza que toca
 numToken = 0;
-//Array para pintar las fichas activas
+
+//Array para guardar las fichas activas
 fichasActivas=[];
 
-
+//Array bidimensional para guardar las rotaciones posibles
 var rot0 = [];
 var rot1 = [];
 var rot2 = [];
 var rot3 = [];
 var fichasValidas = [rot0,rot1,rot2,rot3];
+
+
 
 function ficha(num, coordx, coordy, rot, token) {
 	    this.num = num;
@@ -29,15 +50,18 @@ function ficha(num, coordx, coordy, rot, token) {
 	    this.rot = rot;
 	    this.token=token;
 };
+//inicializamos la ficha actual hasta que la cambiemos por
+//la primera que nos pase logica
+var fichaActual= new ficha(02,0,0,0,0);
 
 
-//
+
 rotate = 1;
 //obejtos de piezas para guardar
 //Creamos todas las piezas, y sus rotaciones
 //Asi como el tablero y la pieza azul auxiliar
 //TODO: Pintarle una interrogacion o algo para
-//que no quede tan feo
+//que no quede tan soso
 var sprites = {
 	//fondo
 	3000: {sx: 0, sy: 400, w: 590, h: 300},
@@ -172,26 +196,43 @@ var startGame = function() {
     var fichatest= new  ficha(324,300,300,2,0);
     fichasActivas.push(fichatest);
    
-    /////////////////////////////////////////////////////////////////////////////////
-    var fichapos= new ficha(fichAzul,100,0,0,0);
+    ///////////////////////////Meto rotaciones posibles para ir combrobando///////////
+    var fichapos= new ficha(fichAzul,1,0,0,0);
     fichasValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,0,100,0,0);
-    fichasValidas[1].push(fichapos);
-    var fichapos= new ficha(fichAzul,400,400,0,0);
+    var fichapos= new ficha(fichAzul,0,1,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,4,4,0,0);
     fichasValidas[3].push(fichapos);
-    var fichapos= new ficha(fichAzul,100,200,0,0);
-    fichasValidas[3].push(fichapos);
+    var fichapos= new ficha(fichAzul,1,2,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,2,0,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,0,2,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,3,6,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,1,3,0,0);
+    fichasValidas[0].push(fichapos);
+
+    var fichapos= new ficha(fichAzul,7,2,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,6,4,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,6,3,0,0);
+    fichasValidas[0].push(fichapos);
+    var fichapos= new ficha(fichAzul,2,7,0,0);
+    fichasValidas[0].push(fichapos);
 
    	////////////////////////////////////////////////////////////////////////////////
-   	var fichaActual= new ficha(02,0,0,0,0);
+   	
 
 
    	////////////////////////////////////////////////////////////////////////////////
    	var fichaFondo= new ficha(fichFondo,0,0,0,0);
 
    	Game.setBoard(0,new MyFondo(fichaFondo));
-	Game.setBoard(1,new MyActivas(fichasActivas));
-	Game.setBoard(2,new MyValidas(fichasValidas));
+   	Game.setBoard(1,new MyValidas(fichasValidas));
+	Game.setBoard(2,new MyActivas(fichasActivas));	
 	Game.setBoard(3,new MyActual(fichaActual));
 
 	
@@ -199,9 +240,3 @@ var startGame = function() {
 window.addEventListener("load", function() {
 	Game.initialize("game",sprites,startGame,boxSize,n);
 });
-
-//actualizo coordenadas de la ficha
-/*canvas.addEventListener("mousemove", function(e){
-	Game.tokens[0].dx = e.clientX;
-	Game.tokens[0].dy = e.clientY;
-});*/

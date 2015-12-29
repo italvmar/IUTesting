@@ -6,6 +6,7 @@ var Game = new function() {
 //Meteremos aqui los tableros por el orden que deben ser pintados 
   var pressed=false;
   var boards = [];
+  
   //Este metodo es util para trazar el codigo
   this.countboards= function(){
     return boards.length;
@@ -19,13 +20,15 @@ var Game = new function() {
     this.width = this.canvas.width;
     this.height= this.canvas.height;
 
+    
+
     //Simple formalidad
     this.ctx = this.canvas.getContext && this.canvas.getContext('2d');
     if(!this.ctx) { return alert("Please upgrade your browser to play"); }
 
    
   
-  this.setupInput();
+    this.setupInput();
     this.loop(boxSize,n);
     SpriteSheet.load(sprite_data,callback);
     //Board.load(callback);
@@ -33,44 +36,100 @@ var Game = new function() {
    
   };
   
-   //
-   //    PARA PEDRO:
-   //
-   //
-   //
-   //     Esto esta como en la practica y da errores de que no esta
-    //    Definido, ademas, tampoco funciona en el 
-    //                   tutorial corriendo en firefox t
-   //
-   //
-   //
-   //
-   //
+  function getMousePos(canvas, evt) {
+        
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+    }
 
-  var KEY_CODES = { 37:'left', 39:'right', 32 :'fire' };
-  this.keys = {};
+  
 
   this.setupInput = function() {
 
-    window.addEventListener('keydown',function(e) {
-      if(KEY_CODES[event.keyCode]) {
-       Game.keys[KEY_CODES[event.keyCode]] = true;
-       e.preventDefault();
+    //Con esta funcion comprobamos si  la ficha que queremos colocar
+    //Esta dentro de las fichas validas permitidas para esa casilla y esa rotacion
+    //De ser asi la metemos EJ: La ficha de la posicion 4/4 solo acepta rot 3
+    function checkValida(ficha){
+    var valida=false
+    for (i=0; i<fichasValidas.length; i++){
+      for (j=0; j<fichasValidas[i].length; j++){        
+
+        if(fichasValidas[i][j].coord[0]*anchoficha==ficha.coord[0]
+          &&fichasValidas[i][j].coord[1]*altoficha==ficha.coord[1]
+          &&ficha.rot==i){
+          valida=true;
+        }
+                          
       }
-    },false);
+    }
+    return valida;
+  }
+
+    
+    //Este evento lo usamos para colocar una pieza en el tablero
+    //al hacer click, siempre y cuando esa ficha sea valida
+    canvas.addEventListener("click", getPosition, false);
+
+    function getPosition(evt)
+    {
+      if(!click){
+      var pos = getMousePos(canvas, evt);
+      fichaActual.coord[0]=Math.floor(pos.x/altoficha)*altoficha;
+      nuevax=fichaActual.coord[0]
+      fichaActual.coord[1]=Math.floor(pos.y/anchoficha)*anchoficha;
+      nuevay=fichaActual.coord[1]
+      
+      var nuevaFicha = new ficha(fichaActual.num,nuevax,nuevay,fichaActual.rot,0);
+        if (checkValida(nuevaFicha)){
+          console.log("ES VALIDA")
+          boards[2].add(nuevaFicha);     
+        }
+      }
+      
+    }
+    
+
+    //Este evento lo usamos para recoger cuando
+    //el jugador presienoa tanto izquierda como derecha
+    //Y bloquea el teclado hasta que se pulse otra tecla
+    //O se suelte la anterior (Esto lo hace el evento keyup de abajo)
+    window.addEventListener('keydown',check ,false);
+      function check(e) {
+        
+       var code = e.keyCode;    
+        if(code ==37) { 
+          e.preventDefault();
+          console.log("izquierda pressionada");
+          if (fichaActual.rot!=0){
+            fichaActual.rot=fichaActual.rot -1;
+            fichaActual.num=fichaActual.num -100;
+            pressed=true;
+          }
+       
+        }else if(code==39) { 
+          e.preventDefault();
+          console.log("derecha pressionada");
+         if (fichaActual.rot!=3){
+            fichaActual.rot=fichaActual.rot +1;
+            fichaActual.num=fichaActual.num +100;
+            pressed=true;
+          }
+        }else { 
+        pressed=false;
+        }
+    }    
 
     window.addEventListener('keyup',function(e) {
-      if(KEY_CODES[event.keyCode]) {
-       Game.keys[KEY_CODES[event.keyCode]] = false; 
-       e.preventDefault();
-      }
+      pressed=false;
     },false);
+  
   }
   
-  //TODO boxsize necesario?
-  //Podria ponerse directamente la constante
+  
   this.loop = function(boxSize) {
-   // Board.draw(Game.ctx,boxSize,n);
+  
 
    //Este loop nos pinta los tableros a cada pasada
    //Tambien nos actualiza con step los tableros
@@ -104,31 +163,22 @@ var SpriteSheet = new function() {
   };
   this.draw = function(ctx,sprite,x,y,boxSize) {
     var s = this.map[sprite];
-     
-    ctx.drawImage(this.image,s.sx ,s.sy,s.w, s.h,x,y,boxSize,boxSize);
+
+     if (sprite == fichFondo){
+      ctx.drawImage(this.image,s.sx ,s.sy,s.w, 
+                      s.h,x,y,boxSize,boxSize);
+     }else{
+      ctx.drawImage(this.image,s.sx ,s.sy,s.w, 
+                      s.h,x,y,anchoficha,altoficha);
+     }    
     
   };
 };
 
-//Esto es interesante para dibujar fondos diferentes desde imagnes
-//Pero al meter el fondo en el spritesheet, no es necesario
-/*function Board(dx,dy,w,h){
-  this.dx = dx;
-  this.dy = dy;
-  this.w = w;
-  this.h = h;
 
-  this.load = function(callback){
-    this.image = new Image();
-    this.onload = callback;
-    this.image.src = "imagenes/fondo.jpg";
-  }
-  this.draw = function(ctx){
-    ctx.drawImage(this.image,this.dx,this.dy,this.w,this.h);
-  }
-};*/
-//Tablero en el que guardamos las fichas activas que 
-//Hemos colocado 
+//En este tablero englobamos las fichas activas
+//De la partida
+
 function MyActivas(fichasActivas){
 
   this.draw = function(ctx,boxSize){
@@ -140,18 +190,24 @@ function MyActivas(fichasActivas){
     }
     
   }
+
+  this.add= function(ficha){
+    fichasActivas.push(ficha);
+  }
    this.step = function(ctx) {
    }
 };
 //Tablero en el que colocamos las rotaciones posibles
-//Dibuja piezas azules
+//Dibuja piezas azules teniendo en cuenta sus coordenadas recibidas
+//Por eso hay que multiplicar por el alto y el ancho ya que logica
+//nos las pasa solo en forma de coordenada.
 function MyValidas(fichasValidas){
 
   this.draw = function(ctx,boxSize){
     for (i=0; i<fichasValidas.length; i++){
       for (j=0; j<fichasValidas[i].length; j++){
-        SpriteSheet.draw(ctx,fichasValidas[i][j].num,fichasValidas[i][j].coord[0],
-                          fichasValidas[i][j].coord[1],boxSize);
+        SpriteSheet.draw(ctx,fichasValidas[i][j].num,fichasValidas[i][j].coord[0]*altoficha,
+                          fichasValidas[i][j].coord[1]*anchoficha,boxSize);
       }
     }
   }
@@ -166,111 +222,30 @@ function MyActual(fichaActual){
     SpriteSheet.draw(ctx,fichaActual.num,fichaActual.coord[0],
         fichaActual.coord[1],boxSize);
   }
-  //TODO: Mirar donde hacer bien las declaraciones, de los eventos de canvas
 
-  //ESTA DANDO PROBLEMAS DE RECURSOS
-      function getMousePos(canvas, evt) {
-        var rect = canvas.getBoundingClientRect();
+  this.step = function(x,y) {
+
+    function getMousePos(canvas, evt) {
+        
         return {
           x: evt.clientX - rect.left,
           y: evt.clientY - rect.top
         };
-      }
-
-  this.step = function(x,y) {
-    //
-    //
-    //    PARA PEDRO
-    //
-    //     He estado trasteando con los event listeners
-    //        Fuera de como esta hecho en el tutorial y 
-    //        no da ningun error por la consola, 
-    //        simplemente los ignora
-    //    
-    //
-    //
-    //
-    //
-
-   /* window.addEventListener('keydown',this.check,true);
-
-    function check(e) {
-
-     var code = e.keyCode;    
-        if(code ==37) { 
-      console.log("izquierda pressionada");
-      if (fichaActual.rot!=0){
-        fichaActual.rot=fichaActual.rot -1;
-        fichaActual.num=fichaActual.num -100;
-        pressed=true;
-      }
-     
-    }else if(code=39) { 
-      console.log("derecha pressionada");
-     if (fichaActual.rot!=3){
-        fichaActual.rot=fichaActual.rot +1;
-        fichaActual.num=fichaActual.num +100;
-        pressed=true;
-      }
-    }else { 
-      pressed=false;
-    }
-  }
-*/
-//
-    //
-    //    PARA PEDRO
-    //
-    //     
-    //        Esto esta hecho tomando el ejemplo del tutorial
-    //        
-    //        
-    //    
-    //
-    //
-    //
-    //
-    if(Game.keys['left']) { 
-      console.log("izquierda pressionada");
-      if (fichaActual.rot!=0){
-        fichaActual.rot=fichaActual.rot -1;
-        fichaActual.num=fichaActual.num -100;
-        pressed=true;
-      }
-     
-    }else if(Game.keys['right']) { 
-      console.log("derecha pressionada");
-     if (fichaActual.rot!=3){
-        fichaActual.rot=fichaActual.rot +1;
-        fichaActual.num=fichaActual.num +100;
-        pressed=true;
-      }
-    }else { 
-      pressed=false;
     }
 
-    //
-    //
-    //    PARA PEDRO
-    //
-    //     Esto es lo que esta dando problemas de recursos
-    //        
-    //        
-    //        
-    //    
-    //
-    //
-    //
-    //
-    canvas.addEventListener('mousemove', function(evt) {
+    //TODO:Sigue consumiendo muchos recursos
+    //Seguro que hay forma de que no los consuma
+
+
+//Esto nos devuelve la posicion actual del raton
+
+    document.addEventListener('mousemove',actPosition ,false);
+    function actPosition(evt) {
         var pos = getMousePos(canvas, evt);
         fichaActual.coord[0]=pos.x - boxSize/2;
         fichaActual.coord[1]=pos.y- boxSize/2;
-      },false);
-    
-    
+    }        
   }
-
 
 }
 //Este tablero guarda la imagen de fondo 
