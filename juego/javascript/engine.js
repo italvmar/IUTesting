@@ -178,7 +178,6 @@ var SpriteSheet = new function() {
 
 //En este tablero englobamos las fichas activas
 //De la partida
-
 function MyActivas(fichasActivas){
 
   this.draw = function(ctx,boxSize){
@@ -197,6 +196,7 @@ function MyActivas(fichasActivas){
    this.step = function(ctx) {
    }
 };
+
 //Tablero en el que colocamos las rotaciones posibles
 //Dibuja piezas azules teniendo en cuenta sus coordenadas recibidas
 //Por eso hay que multiplicar por el alto y el ancho ya que logica
@@ -205,10 +205,13 @@ function MyValidas(fichasValidas){
 
   this.draw = function(ctx,boxSize){
     for (i=0; i<fichasValidas.length; i++){
-      for (j=0; j<fichasValidas[i].length; j++){
-        SpriteSheet.draw(ctx,fichasValidas[i][j].num,fichasValidas[i][j].coord[0]*altoficha,
-                          fichasValidas[i][j].coord[1]*anchoficha,boxSize);
-      }
+       if(i == fichaActual.rot ){
+          for (j=0; j<fichasValidas[i].length; j++){
+
+            SpriteSheet.draw(ctx,fichasValidas[i][j].num,fichasValidas[i][j].coord[0]*altoficha,
+                              fichasValidas[i][j].coord[1]*anchoficha,boxSize);
+          }
+        }
     }
   }
 
@@ -248,6 +251,7 @@ function MyActual(fichaActual){
   }
 
 }
+
 //Este tablero guarda la imagen de fondo 
 //fondoSize cambia el tamaño del fondo
 function MyFondo(fondo){
