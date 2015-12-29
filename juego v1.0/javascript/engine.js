@@ -5,7 +5,7 @@ var boxSize = 100*n;
 //contiene todos los posibles objetos a dibujar
 var boards = [];
 
-
+//------------------------------------------------
 var SpriteSheet = new function() {
   this.map = { };
   
@@ -20,7 +20,7 @@ var SpriteSheet = new function() {
     ctx.drawImage(this.image,s.sx ,s.sy,s.w, s.h,x,y,w,h);
   };
 };
-
+//----------------------------------------------------------------------------------
 var Game = new function() {
 
   this.initialize = function(canvasElementId,sprite_data,callback) {
@@ -46,12 +46,14 @@ var Game = new function() {
         boards[i].draw(Game.ctx);
       }
     }
-    setTimeout(Game.loop,200);
+    setTimeout(Game.loop,30);
   };
   //funcion para fijar los distintos objetos (tablero,ficha que muevo,array de fichas colocadas,muñecos)
   this.setBoard = function(num,board) { boards[num] = board; };
 };
 
+
+//------------------------------------------------------------------------------------------
 function Background(dx,dy,w,h,sprite){
   this.dx = dx;
   this.dy = dy;
@@ -64,6 +66,7 @@ function Background(dx,dy,w,h,sprite){
   }
 };
 
+//-----------------------------------------------------------------------------
 //objeto ficha simple
 function Token(x,y,rotate,sprite){
   this.dx = x;
@@ -75,6 +78,8 @@ function Token(x,y,rotate,sprite){
     SpriteSheet.draw(ctx,this.sprite,this.dx,this.dy,boxSize,boxSize);
   }
 }
+
+//----------------------------------------------------------------------------
 //la ficha que muevo por el tablero para colocarla
 function CurrentToken(x,y,rotate,sprite){
   this.dx = x;
@@ -104,7 +109,7 @@ function CurrentToken(x,y,rotate,sprite){
 
   //capturo evento click, crea un objeto Token con coordenadas x e y ya ajustadas y lo mete en el array de fichas fijas
   canvas.addEventListener("click", function(e){
-    var coord = calculateCoord(e.clientX-boxSize/2,e.clientY-boxSize/2);
+    var coord = calculateCoord(e.clientX,e.clientY);
     FixedTokens.setToken(new Token(coord.x,coord.y,boards[2].rotate,boards[2].sprite));
     //nueva ficha,cambio el atributo sprite de CurrentToken
     boards[2].sprite = ((Math.round(Math.random()*23))+1).toString();; 
@@ -112,7 +117,7 @@ function CurrentToken(x,y,rotate,sprite){
   
 };
 
-
+//--------------------------------------------------------------------------------------------------
 //objeto que contiene el array donde meter las fichas fijadas
 var FixedTokens = new function(){
   this.tokens = [];
@@ -127,3 +132,5 @@ var FixedTokens = new function(){
   //meter ficha en la coleccion de fichas fijadas
   this.setToken = function(token) { this.tokens.push(token); };
 };
+
+//----------------------------------------------------------------------------------------------------
