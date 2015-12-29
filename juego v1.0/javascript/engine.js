@@ -33,24 +33,26 @@ var Game = new function() {
     SpriteSheet.load(sprite_data,callback);
   };
 
-  var tokens = [];
+  //contiene todos los posibles objetos a dibujar
+  var boards = [];
+
   this.loop = function() {
 
-    for(var i=0, len = tokens.length;i<len;i++) {
-      if(tokens[i]) {
-        if (i>0){
-          tokens[i].step(tokens);
+    for(var i=0, len = boards.length;i<len;i++) {
+      if(boards[i]) {
+        //para ficha que se mueve
+        if (i==2){
+          boards[i].step(boards);
+          boards[i].fix();
         }
-        tokens[i].draw(Game.ctx);
-        //console.log("dibujo");
-        //console.log("x = "+tokens[1].dx+",y = "+tokens[1].dy);
+        boards[i].draw(Game.ctx);
       }
     }
-    setTimeout(Game.loop,400);
+    setTimeout(Game.loop,200);
   };
-  this.setBoard = function(num,token) { tokens[num] = token; };
+  //funcion para fijar los distintos objetos (tablero,ficha que muevo,array de fichas colocadas,muñecos)
+  this.setBoard = function(num,board) { boards[num] = board; };
 };
-
 
 function Background(dx,dy,w,h,sprite){
   this.dx = dx;
@@ -64,7 +66,8 @@ function Background(dx,dy,w,h,sprite){
   }
 };
 
-function MyToken(num,x,y,rotate,sprite){
+
+function ActualToken(num,x,y,rotate,sprite){
   this.numToken = num;
   this.dx = x;
   this.dy = y;
@@ -75,10 +78,44 @@ function MyToken(num,x,y,rotate,sprite){
     SpriteSheet.draw(ctx,this.sprite,this.dx,this.dy,boxSize,boxSize);
   }
 
-  this.step = function(tokens) {
+  this.step = function(boards) {
     canvas.addEventListener("mousemove", function(e){
-      tokens[1].dx = e.clientX-boxSize/2;
-      tokens[1].dy = e.clientY-boxSize/2;
+      boards[2].dx = e.clientX-boxSize/2;
+      boards[2].dy = e.clientY-boxSize/2;
     });
   }
+
+  //devuelve la posicion donde colocar la ficha para que se ajuste al canvas
+  //function calculateCoord(x,y){
+      
+  //};
+
+  //metodo para fijar la ficha, crea un objeto ficha con coordenadas x e y ya ajustadas y lo mete en el array de fichas fijas
+  this.fix = function() {
+    canvas.addEventListener("click", function(e){
+      //var coords = calculateCoord(e.clientX,e.clientY);
+
+      console.log("he clickeado");
+      //genero objeto ficha que guardar en mi array de fichas fijadas
+      FixedTokens.setToken(FixedTokens.tokensCounter(),new ActualToken(numToken,e.clientX-boxSize/2,e.clientY-boxSize/2,rotate,numToken));
+    });
+  }
+};
+
+//objeto que contiene el array donde meter las fichas fijadas
+var FixedTokens = new function(){
+  this.tokens = [];
+
+  this.draw = function(ctx){
+    for(var i = 0, len = this.tokens.length;i<len;i++){
+      if (this.tokens[i]){
+        this.tokens[i].draw(ctx);
+      }  
+    }
+  };
+  //meter ficha en la coleccion de fichas fijadas
+  this.setToken = function(num,token) { this.tokens[num] = token; };
+  //contador de fichas colocadas
+  this.tokensCounter = function() {return this.tokens.length; };
+
 };

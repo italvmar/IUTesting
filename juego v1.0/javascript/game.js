@@ -3,8 +3,6 @@ ctx = canvas.getContext('2d');
 
 //variable final de turno
 var endTurn = false;
-//numero de pieza que toca
-numToken = 4;
 //rotacion de la ficha
 rotate = 1;
 
@@ -37,11 +35,15 @@ var sprites = {
 	24 : { sx: 500, sy: 300, w: 100, h: 100}
 };
 
+//numero de pieza que toca(numero aleatorio entre 1 y 24)
+numToken =  ((Math.round(Math.random()*23))+1).toString();
+
 //inicializo el juego
 var startGame = function() {
 	Game.setBoard(0,new Background(0,0,2000,2000,"fondo"));
-	Game.setBoard(1,new MyToken(numToken,1005,0,rotate,numToken.toString()));
-	
+	Game.setBoard(1,FixedTokens);
+	//console.log(FixedTokens.tokens);
+	Game.setBoard(2,new ActualToken(numToken,1005,0,rotate,numToken));
 }
 window.addEventListener("load", function() {
 	Game.initialize("game",sprites,startGame);
