@@ -17,7 +17,7 @@ var fichFondo=3000;
 var fichAzul=2000;
 
 //Valores iniciales de tamaño de fichas y fondo
-var cantfichas=150;
+var cantfichas=25;
 var anchoficha;
 var altoficha;
 
