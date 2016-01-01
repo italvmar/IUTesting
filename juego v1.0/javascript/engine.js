@@ -92,7 +92,7 @@ function CurrentToken(x,y,rotate,sprite){
   }
 
   this.step = function(board) {
-    canvas.addEventListener("mousemove", function(e){
+    Game.canvas.addEventListener("mousemove", function(e){
       board.dx = e.clientX-boxSize/2;
       board.dy = e.clientY-boxSize/2;
     });
@@ -108,7 +108,7 @@ function CurrentToken(x,y,rotate,sprite){
   };
 
   //capturo evento click, crea un objeto Token con coordenadas x e y ya ajustadas y lo mete en el array de fichas fijas
-  canvas.addEventListener("click", function(e){
+  Game.canvas.addEventListener("click", function(e){
     var coord = calculateCoord(e.clientX,e.clientY);
     FixedTokens.setToken(new Token(coord.x,coord.y,boards[2].rotate,boards[2].sprite));
     //nueva ficha,cambio el atributo sprite de CurrentToken

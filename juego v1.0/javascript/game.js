@@ -1,6 +1,3 @@
-canvas = document.getElementById("game");
-ctx = canvas.getContext('2d');
-
 //variable final de turno
 var endTurn = false;
 //rotacion de la ficha
