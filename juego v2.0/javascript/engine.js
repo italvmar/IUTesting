@@ -31,7 +31,99 @@ var Game = new function() {
           x: evt.clientX - rect.left,
           y: evt.clientY - rect.top
         };
-    }
+  }
+//ESTA FUNCION SE USARÁ
+//Cuando tengamos que pasarles a los de logica las coordenadas de sus monigotes
+//Ya que para pintar es mas sencillo llevarlas por separado y ellos las giran
+//Junto con la ficha y además 
+  function traduceLogicaToken(pos, rot){
+    arry=[false,false,false,false,false,false,false,false,false];
+  if (rot==0){
+      if (pos==1){
+        arry[0]=true;
+      }else if( pos==2){
+        arry[1]=true;
+      }else if( pos==3){
+      arry[2]=true;        
+      }else if( pos==4){
+        arry[3]=true;        
+      }else if( pos==5){
+        arry[4]=true;        
+      }else if( pos==6){
+        arry[5]=true;        
+      }else if( pos==7){
+        arry[6]=true;       
+      }else if( pos==8){
+        arry[7]=true;        
+      }else if( pos==9){
+        arry[8]=true;     
+     }
+  }
+  if (rot==1){
+      if (pos==1){
+        arry[6]=true;
+      }else if( pos==2){
+        arry[7]=true;
+      }else if( pos==3){
+      arry[0]=true;        
+      }else if( pos==4){
+        arry[1]=true;        
+      }else if( pos==5){
+        arry[2]=true;        
+      }else if( pos==6){
+        arry[3]=true;        
+      }else if( pos==7){
+        arry[4]=true;       
+      }else if( pos==8){
+        arry[5]=true;        
+      }else if( pos==9){
+        arry[8]=true;     
+     }
+  }
+  if (rot==2){
+      if (pos==1){
+        arry[4]=true;
+      }else if( pos==2){
+        arry[5]=true;
+      }else if( pos==3){
+      arry[6]=true;        
+      }else if( pos==4){
+        arry[7]=true;        
+      }else if( pos==5){
+        arry[0]=true;        
+      }else if( pos==6){
+        arry[1]=true;        
+      }else if( pos==7){
+        arry[2]=true;       
+      }else if( pos==8){
+        arry[3]=true;        
+      }else if( pos==9){
+        arry[8]=true;     
+     }
+  }
+  if (rot==3){
+      if (pos==1){
+        arry[2]=true;
+      }else if( pos==2){
+        arry[3]=true;
+      }else if( pos==3){
+      arry[4]=true;        
+      }else if( pos==4){
+        arry[5]=true;        
+      }else if( pos==5){
+        arry[6]=true;        
+      }else if( pos==6){
+        arry[7]=true;        
+      }else if( pos==7){
+        arry[0]=true;       
+      }else if( pos==8){
+        arry[1]=true;        
+      }else if( pos==9){
+        arry[8]=true;     
+     }
+  }
+     return arry;
+  }
 
   this.setupInput = function() {
 
@@ -52,28 +144,24 @@ var Game = new function() {
     return valida;
   }
     
-    canvas.addEventListener("click", getPosition, false);
+    game.addEventListener("click", getPosition, false);
 
     function getPosition(evt)
     {
-      if(!click){
+      if(!click && !esvalida){
       var pos = getMousePos(canvas, evt);
-      fichaActiva.coord[0]=Math.floor(pos.x/altoficha)*altoficha;
-      nuevax=fichaActiva.coord[0]
+      fichaActiva.coord[0]=Math.floor(pos.x/altoficha)*altoficha;      
       fichaActiva.coord[1]=Math.floor(pos.y/anchoficha)*anchoficha;
+
+      nuevax=fichaActiva.coord[0]
       nuevay=fichaActiva.coord[1]
       
-      var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,0);
+      var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,0,playerActivo);
         if (checkValida(nuevaFicha)){
+          esvalida=true;
           console.log("ES VALIDA")
-          boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          console.log("INTRODUCE UN TOKEN DANDOLE A UNA TECLA DEL TECLADO")
           
-          **********************************************/
-          //numero de pieza que toca(numero aleatorio entre 1 y 24)
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;   
         }else{
            alert("Ficha no valida!");
         }
@@ -85,7 +173,7 @@ var Game = new function() {
       function check(e) {
         
        var code = e.keyCode;    
-        if(code ==37) { 
+        if(code ==37 && !esvalida) { 
           e.preventDefault();
           console.log("izquierda pressionada");
           if (fichaActiva.rot!=0){
@@ -94,7 +182,7 @@ var Game = new function() {
             pressed=true;
           }
        
-        }else if(code==39) { 
+        }else if(code==39 && !esvalida) { 
           e.preventDefault();
           console.log("derecha pressionada");
          if (fichaActiva.rot!=3){
@@ -102,6 +190,166 @@ var Game = new function() {
             fichaActiva.num=fichaActiva.num +100;
             pressed=true;
           }
+        }else if(code==48 && esvalida ) { 
+          e.preventDefault();
+          console.log("0 presionado");
+          fichaActiva.rot=0;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,0,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==49 && esvalida ) { 
+          e.preventDefault();
+          console.log("1 presionado");
+          fichaActiva.token=1;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==50 && esvalida ) { 
+          e.preventDefault();
+          console.log("2 presionado");
+          fichaActiva.token=2;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==51 && esvalida ) { 
+          e.preventDefault();
+          console.log("3 presionado");
+          fichaActiva.token=3;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==52 && esvalida ) { 
+          e.preventDefault();
+          console.log("4 presionado");
+          fichaActiva.token=4;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==53 && esvalida ) { 
+          e.preventDefault();
+          console.log("5 presionado");
+          fichaActiva.token=5;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==54 && esvalida ) { 
+          e.preventDefault();
+          console.log("6 presionado");
+          fichaActiva.token=6;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==55 && esvalida ) { 
+          e.preventDefault();
+          console.log("7 presionado");
+          fichaActiva.token=7;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==56 && esvalida ) { 
+          e.preventDefault();
+          console.log("8 presionado");
+          fichaActiva.token=8;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
+        }else if(code==57 && esvalida ) { 
+          e.preventDefault();
+          console.log("9 presionado");
+          fichaActiva.token=9;
+          nuevax=fichaActiva.coord[0]
+          nuevay=fichaActiva.coord[1]
+      
+          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+           boards[2].add(nuevaFicha);  
+          /***************************************************
+          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+          
+          **********************************************/  
+          esvalida=false;      
+          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+          fichaActiva.rot= 0;  
         }else { 
         pressed=false;
         }
@@ -148,14 +396,59 @@ var SpriteSheet = new function() {
      if (sprite == fichFondo){
       ctx.drawImage(this.image,s.sx ,s.sy,s.w, 
                       s.h,x,y,canvas.width,canvas.height);
+     }else if(sprite==501 ||sprite==502 ||sprite==503 ||sprite==504 ||sprite==505){
+      ctx.drawImage(this.image,s.sx ,s.sy,s.w, 
+                      s.h,x,y,anchoficha/3,altoficha/3);
      }else{
       ctx.drawImage(this.image,s.sx ,s.sy,s.w, 
                       s.h,x,y,anchoficha,altoficha);
      }    
     
   };
+
 };
 
+function posicionMonigote(pos){
+  var x=0;
+  var y=0;
+  //N
+  if(pos==1){
+    y=-1;
+  //NW
+  }else if(pos==2){
+    y= -1;
+    x= -1;
+  //W
+  }else if(pos==3){
+    y=0;
+    x=-1
+  //SW
+  }else if(pos==4){
+    y=1;
+    x=-1
+  //S
+  }else if(pos==5){
+    y=1;
+    x=0;
+  //SE
+  }else if(pos==6){
+    y=1;
+    x=1;
+  //E
+  }else if(pos==7){
+    y=0;
+    x=1;
+  //NE
+  }else if(pos==8){
+    y=-1;
+    x=1;
+  //Centro
+  }else if(pos==9){
+    x=0;
+    y=0;
+  }
+  return [x,y];
+}
 
 //--------------------------------------------------------------------------------------------------
 function TableroFijadas(fichasFijadas){
@@ -163,9 +456,21 @@ function TableroFijadas(fichasFijadas){
   this.draw = function(ctx){
 
     for (i = 0; i < fichasFijadas.length; i++) {
+    var coorMon= posicionMonigote(fichasFijadas[i].token);
      
       SpriteSheet.draw(ctx,fichasFijadas[i].num,fichasFijadas[i].coord[0],
                           fichasFijadas[i].coord[1]);
+
+      //Dibujamos monigotes si tienen
+       
+      if (fichasFijadas[i].token!=0){
+        SpriteSheet.draw(ctx,500+fichasFijadas[i].player,
+                          //El +****/2 es para dibujar a partir del centro de la ficha
+                          //El - ****/6 es para dibujar a partir del centro del token
+                          //El + coorMon/3.6 es variable y sirve para separar mas las piezas  que se vea mejor
+                          fichasFijadas[i].coord[0]+anchoficha/2 -anchoficha/6 + coorMon[0]*anchoficha/3.6,
+                          fichasFijadas[i].coord[1]+anchoficha/2 -altoficha/6 + coorMon[1]*altoficha/3.6);
+      }
     }
     
   }
@@ -212,11 +517,13 @@ function TableroActiva(fichaActiva){
         };
     }    
 
-    document.addEventListener('mousemove',actPosition ,false);
+    game.addEventListener('mousemove',actPosition ,false);
     function actPosition(evt) {
+      if(!esvalida){
         var pos = getMousePos(canvas, evt);
         fichaActiva.coord[0]=pos.x - anchoficha/2;
         fichaActiva.coord[1]=pos.y- altoficha/2;
+      }
     }        
   }
 

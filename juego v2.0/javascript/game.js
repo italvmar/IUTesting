@@ -4,8 +4,14 @@ ctx = canvas.getContext('2d');
 //variable final de turno
 var endTurn = false;
 
+//Variable del jugador activo
+var playerActivo=1;
+
 //rotacion de la ficha
 rotate = 1;
+
+//La ficha es valida
+var esvalida=false;
 
 //factor para agrandar el cuadrado
 var n = 0.75;
@@ -42,20 +48,29 @@ var posicionesValidas = [rot0,rot1,rot2,rot3];
 
 
 
-function ficha(num, coordx, coordy, rot, token) {
+function ficha(num, coordx, coordy, rot, token, player) {
 	    this.num = num;
 	    this.coord = [coordx,coordy];
 	    this.rot = rot;
 	    this.token=token;
+	    this.player=player
 };
 
-var fichaActiva= new ficha(02,0,0,0,0);
+var fichaActiva= new ficha(02,0,0,0,0,0);
 
 var sprites = {
 	//fondo
 	3000: {sx: 0, sy: 400, w: 590, h: 300},
 	//Pieza Azul
 	2000: {sx: 398, sy: 704, w: 100, h: 100},
+	//SPRITES TEMPORALES PARA LOS MONIGOTES
+	501: { sx: 0*100, sy: 0, w: 100, h: 100},
+	502: { sx: 1*100, sy: 0, w: 100, h: 100},
+	503: { sx: 2*100, sy: 0, w: 100, h: 100},
+	504: { sx: 3*100, sy: 0, w: 100, h: 100},
+	505: { sx: 4*100, sy: 0, w: 100, h: 100},
+	//////////////////////////////////////
+
 
 
 	01: { sx: 0*100, sy: 0, w: 100, h: 100},
@@ -167,35 +182,35 @@ var startGame = function() {
 
    
     ///////////////////////////Meto rotaciones posibles para ir combrobando///////////
-    var fichapos= new ficha(fichAzul,1,0,0,0);
+    var fichapos= new ficha(fichAzul,1,0,0,0,0);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,0,1,0,0);
+    var fichapos= new ficha(fichAzul,0,1,0,0,0);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,4,4,0,0);
+    var fichapos= new ficha(fichAzul,4,4,0,0,0);
     posicionesValidas[3].push(fichapos);
-    var fichapos= new ficha(fichAzul,1,2,0,0);
+    var fichapos= new ficha(fichAzul,1,2,0,0,0);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,2,0,0,0);
+    var fichapos= new ficha(fichAzul,2,0,0,0,0);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,0,2,0,0);
+    var fichapos= new ficha(fichAzul,0,2,0,0,0);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,3,6,0,0);
+    var fichapos= new ficha(fichAzul,3,6,0,0,0);
     posicionesValidas[1].push(fichapos);
-    var fichapos= new ficha(fichAzul,1,3,0,0);
+    var fichapos= new ficha(fichAzul,1,3,0,0,0);
     posicionesValidas[0].push(fichapos);
 
-    var fichapos= new ficha(fichAzul,7,2,0,0);
+    var fichapos= new ficha(fichAzul,7,2,0,0,0);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,6,4,0,0);
+    var fichapos= new ficha(fichAzul,6,4,0,0,0);
     posicionesValidas[3].push(fichapos);
-    var fichapos= new ficha(fichAzul,6,3,0,0);
+    var fichapos= new ficha(fichAzul,6,3,0,0,0);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,2,7,0,0);
+    var fichapos= new ficha(fichAzul,2,7,0,0,0);
     posicionesValidas[0].push(fichapos);	
 
    	////////////////////////////////////////////////////////////////////////////////
-   	var fichaFondo= new ficha(fichFondo,0,0,0,0);
-
+   	var fichaFondo= new ficha(fichFondo,0,0,0,0,0);
+   	var esvalida=false;
    	Game.setBoard(0,new TableroFondo(fichaFondo));
    	Game.setBoard(1,new TableroRotaciones(posicionesValidas));
 	Game.setBoard(2,new TableroFijadas(fichasFijadas));	
