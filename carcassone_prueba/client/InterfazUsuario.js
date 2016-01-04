@@ -62,12 +62,6 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.game.generateTile = function(){
-  	var idRandom = Math.random()*23 + 1;
-
-  	return parseInt(idRandom);
-  }, 
-  
   Template.game.endOfTurn = function(){
 	posRot = 0;
 	Session.set('showPickTile', true);
@@ -79,10 +73,13 @@ if (Meteor.isClient) {
   Template.game.startTurn = function(){
   // meteor.call a logica
   // desencapsulamos la info
-	tileID = Template.game.generateTile();
-  startGame(tileID); //Hay k adaptar el codigo y cambiar la llamada
-  Game.loop(Tile.Rot[posRot].TablePos);
-	console.log(tileID);
+	//tileID = Template.game.generateTile();
+	Meteor.call('generateTile', function(err, id_tile) {
+    tileID = id_tile;
+	});
+	startGame(tileID); //Hay k adaptar el codigo y cambiar la llamada
+	//Game.loop(Tile.Rot[posRot].TablePos);
+	console.log("mi ficha generada es  : " + tileID);
   }, 
   
   Template.game.endOfGame = function(){
@@ -117,16 +114,15 @@ if (Meteor.isClient) {
   Template.game.events({
 	  
     'click button#PickTile': function () {
-
 		
 		Template.game.startTurn(); 
 		Template.game.sendRotation(); // "enviamos" las posibles posiciones en el tablero para la rotacion por defecto
 		Session.set('showRotateTile', true);
 		Session.set('showpickTile', false);
+		$('button#PickTile').hide();
     },
 
     'click button#RotateTile': function () {
-
   		console.log("Inicio: " + posRot)
   		posRot += 1;
   		if(posRot > 3)
@@ -157,6 +153,7 @@ if (Meteor.isClient) {
       // Restar contador de followers
     	// Terminar el turno 
 		  Template.game.endOfTurn();
+		  $('button#PickTile').show();
       //Comprobar si es fin de partida, si lo es
       //Template.game.endOfGame();
 		
@@ -165,10 +162,11 @@ if (Meteor.isClient) {
     
   });
 }
-
+/*
 if (Meteor.isServer) {
   Meteor.startup(function () {
 
 
   });
 }
+*/
