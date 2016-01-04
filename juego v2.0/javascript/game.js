@@ -5,7 +5,7 @@ ctx = canvas.getContext('2d');
 var endTurn = false;
 
 //Variable del jugador activo
-var playerActivo=1;
+var playerActivo=5;
 
 //rotacion de la ficha
 rotate = 1;
@@ -63,12 +63,13 @@ var sprites = {
 	3000: {sx: 0, sy: 400, w: 590, h: 300},
 	//Pieza Azul
 	2000: {sx: 398, sy: 704, w: 100, h: 100},
-	//SPRITES TEMPORALES PARA LOS MONIGOTES
-	501: { sx: 0*100, sy: 0, w: 100, h: 100},
-	502: { sx: 1*100, sy: 0, w: 100, h: 100},
-	503: { sx: 2*100, sy: 0, w: 100, h: 100},
-	504: { sx: 3*100, sy: 0, w: 100, h: 100},
-	505: { sx: 4*100, sy: 0, w: 100, h: 100},
+	
+	//SPRITES PARA LOS MONIGOTES
+	501: { sx: 0*100, sy: 2300, w: 100, h: 100},
+	502: { sx: 1*100, sy: 2300, w: 100, h: 100},
+	503: { sx: 2*100, sy: 2300, w: 100, h: 100},
+	504: { sx: 3*100, sy: 2300, w: 100, h: 100},
+	505: { sx: 4*100, sy: 2300, w: 100, h: 100},
 	//////////////////////////////////////
 
 
