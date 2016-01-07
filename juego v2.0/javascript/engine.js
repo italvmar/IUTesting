@@ -521,10 +521,38 @@ function TableroActiva(fichaActiva){
     function actPosition(evt) {
       if(!esvalida){
         var pos = getMousePos(canvas, evt);
-        fichaActiva.coord[0]=pos.x - anchoficha/2;
-        fichaActiva.coord[1]=pos.y- altoficha/2;
+
+        fichaActiva.coord[0]=pos.x   - anchoficha/2;
+        fichaActiva.coord[1]=pos.y  - altoficha/2;
+
+        /*console.log("scrolls ofset")
+        console.log(rect.left);
+        console.log(rect.top);*/
       }
     }        
+  }
+
+}
+
+function TableroPuntuaciones(jugadores){
+  this.draw = function(ctx){
+    for (i = 0; i < jugadores.length; i++) {
+      ctx.font = "20px Arial";
+      ctx.fillText("Jugador " +jugadores[i].nombre + " :",0,i*50 +20);
+      ctx.fillText("Puntuacion :" + jugadores[i].puntos, 0, i*50 +40);
+    }
+    
+    
+
+    
+  }
+
+  this.step = function(x,y) {
+
+      //TODO:
+      //DEberiamos moverlo junto con el scroll del canvas
+      //Para que esté en la esquina de la parte visible  
+           
   }
 
 }

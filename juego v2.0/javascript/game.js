@@ -5,7 +5,7 @@ ctx = canvas.getContext('2d');
 var endTurn = false;
 
 //Variable del jugador activo
-var playerActivo=5;
+var playerActivo=1;
 
 //rotacion de la ficha
 rotate = 1;
@@ -45,7 +45,7 @@ var rot1 = [];
 var rot2 = [];
 var rot3 = [];
 var posicionesValidas = [rot0,rot1,rot2,rot3];
-
+var jugadores=[];
 
 
 function ficha(num, coordx, coordy, rot, token, player) {
@@ -54,6 +54,13 @@ function ficha(num, coordx, coordy, rot, token, player) {
 	    this.rot = rot;
 	    this.token=token;
 	    this.player=player
+};
+function jugador(posicion, puntos, nombre,idPlayer,fichas){
+		this.pos=posicion;
+		this.puntos=puntos;
+		this.nombre=nombre;
+		this.idPlayer=idPlayer;
+		this.fichas=fichas;
 };
 
 var fichaActiva= new ficha(02,0,0,0,0,0);
@@ -182,7 +189,7 @@ var sprites = {
 var startGame = function() {
 
    
-    ///////////////////////////Meto rotaciones posibles para ir combrobando///////////
+    ///////////////////////////Meto rotaciones posibles para ir comprobando///////////
     var fichapos= new ficha(fichAzul,1,0,0,0,0);
     posicionesValidas[0].push(fichapos);
     var fichapos= new ficha(fichAzul,0,1,0,0,0);
@@ -207,7 +214,19 @@ var startGame = function() {
     var fichapos= new ficha(fichAzul,6,3,0,0,0);
     posicionesValidas[2].push(fichapos);
     var fichapos= new ficha(fichAzul,2,7,0,0,0);
-    posicionesValidas[0].push(fichapos);	
+    posicionesValidas[0].push(fichapos);
+	////////////////////////////Meto jugadores temporales para ir comprobando////////////////////	
+
+	var tempPlayer= new jugador(0,666,"Papta",523,7);
+    jugadores.push(tempPlayer);
+    var tempPlayer= new jugador(1,2,"Dolan",524,7);
+    jugadores.push(tempPlayer);
+    var tempPlayer= new jugador(2,30,"Murtix",122,7);
+    jugadores.push(tempPlayer);
+    var tempPlayer= new jugador(3,30,"Gooby",123,7);
+    jugadores.push(tempPlayer);
+    var tempPlayer= new jugador(4,30777,"TR-8R",322,7);
+    jugadores.push(tempPlayer);
 
    	////////////////////////////////////////////////////////////////////////////////
    	var fichaFondo= new ficha(fichFondo,0,0,0,0,0);
@@ -216,6 +235,7 @@ var startGame = function() {
    	Game.setBoard(1,new TableroRotaciones(posicionesValidas));
 	Game.setBoard(2,new TableroFijadas(fichasFijadas));	
 	Game.setBoard(3,new TableroActiva(fichaActiva));
+	Game.setBoard(4,new TableroPuntuaciones(jugadores));
 
 	
 }
