@@ -63,6 +63,11 @@ function jugador(posicion, puntos, nombre,idPlayer,fichas){
 		this.fichas=fichas;
 };
 
+function rot(coordx, coordy,pos1,pos2,pos3,pos4,pos5,pos6,pos7,pos8,pos9){
+	this.coord = [coordx,coordy];
+	this.dummyPos=[pos1,pos2,pos3,pos4,pos5,pos6,pos7,pos8,pos9];
+}
+
 var fichaActiva= new ficha(02,0,0,0,0,0);
 
 var sprites = {
@@ -190,30 +195,30 @@ var startGame = function() {
 
    
     ///////////////////////////Meto rotaciones posibles para ir comprobando///////////
-    var fichapos= new ficha(fichAzul,1,0,0,0,0);
+    var fichapos= new rot(1,0,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,0,1,0,0,0);
+    var fichapos= new rot(0,1,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,4,4,0,0,0);
+    var fichapos= new rot(4,4,true,true,true,true,true,true,true);
     posicionesValidas[3].push(fichapos);
-    var fichapos= new ficha(fichAzul,1,2,0,0,0);
+    var fichapos= new rot(1,2,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,2,0,0,0,0);
+    var fichapos= new rot(2,0,true,true,true,true,true,true,true);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,0,2,0,0,0);
+    var fichapos= new rot(0,2,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
-    var fichapos= new ficha(fichAzul,3,6,0,0,0);
+    var fichapos= new rot(3,6,true,true,true,true,true,true,true);
     posicionesValidas[1].push(fichapos);
-    var fichapos= new ficha(fichAzul,1,3,0,0,0);
+    var fichapos= new rot(1,3,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
 
-    var fichapos= new ficha(fichAzul,7,2,0,0,0);
+    var fichapos= new rot(7,2,true,true,true,true,true,true,true);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,6,4,0,0,0);
+    var fichapos= new rot(6,4,true,true,true,true,true,true,true);
     posicionesValidas[3].push(fichapos);
-    var fichapos= new ficha(fichAzul,6,3,0,0,0);
+    var fichapos= new rot(6,3,true,true,true,true,true,true,true);
     posicionesValidas[2].push(fichapos);
-    var fichapos= new ficha(fichAzul,2,7,0,0,0);
+    var fichapos= new rot(2,7,true,true,true,true,true,true,true);
     posicionesValidas[0].push(fichapos);
 	////////////////////////////Meto jugadores temporales para ir comprobando////////////////////	
 

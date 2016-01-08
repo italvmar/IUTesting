@@ -168,6 +168,107 @@ var Game = new function() {
       }
       
     }
+
+    function dummyValido(ficha,pos){
+    for (i=0; i<posicionesValidas.length; i++){
+      for (j=0; j<posicionesValidas[i].length; j++){        
+
+        if(posicionesValidas[i][j].coord[0]*anchoficha==ficha.coord[0]
+          &&posicionesValidas[i][j].coord[1]*altoficha==ficha.coord[1]
+          &&ficha.rot==i){
+          if (ficha.rot==0){
+            if (pos==1){
+              return posicionesValidas[i][j].dummyPos[0];
+            }else if( pos==2){
+              return posicionesValidas[i][j].dummyPos[1];
+            }else if( pos==3){
+              return posicionesValidas[i][j].dummyPos[2];    
+            }else if( pos==4){
+              return posicionesValidas[i][j].dummyPos[3];       
+            }else if( pos==5){
+              return posicionesValidas[i][j].dummyPos[4];       
+            }else if( pos==6){
+              return posicionesValidas[i][j].dummyPos[5];     
+            }else if( pos==7){
+              return posicionesValidas[i][j].dummyPos[6];
+            }else if( pos==8){
+              return posicionesValidas[i][j].dummyPos[7];        
+            }else if( pos==9){
+              return posicionesValidas[i][j].dummyPos[8];     
+           }
+          }
+          if (ficha.rot==1){
+            if (pos==1){
+              return posicionesValidas[i][j].dummyPos[6];
+            }else if( pos==2){
+              return posicionesValidas[i][j].dummyPos[7];
+            }else if( pos==3){
+              return posicionesValidas[i][j].dummyPos[0];        
+            }else if( pos==4){
+              return posicionesValidas[i][j].dummyPos[1];        
+            }else if( pos==5){
+              return posicionesValidas[i][j].dummyPos[2];        
+            }else if( pos==6){
+              return posicionesValidas[i][j].dummyPos[3];        
+            }else if( pos==7){
+              return posicionesValidas[i][j].dummyPos[4];       
+            }else if( pos==8){
+              return posicionesValidas[i][j].dummyPos[5];        
+            }else if( pos==9){
+              return posicionesValidas[i][j].dummyPos[8];     
+            }
+          }
+          if (ficha.rot==2){
+            if (pos==1){
+              return posicionesValidas[i][j].dummyPos[4];
+            }else if( pos==2){
+              return posicionesValidas[i][j].dummyPos[5];
+            }else if( pos==3){
+              return posicionesValidas[i][j].dummyPos[6];        
+            }else if( pos==4){
+              return posicionesValidas[i][j].dummyPos[7];        
+            }else if( pos==5){
+              return posicionesValidas[i][j].dummyPos[0];        
+            }else if( pos==6){
+              return posicionesValidas[i][j].dummyPos[1];        
+            }else if( pos==7){
+              return posicionesValidas[i][j].dummyPos[2];       
+            }else if( pos==8){
+              return posicionesValidas[i][j].dummyPos[3];        
+            }else if( pos==9){
+              return posicionesValidas[i][j].dummyPos[8];     
+           }
+          }
+          if (ficha.rot==3){
+            if (pos==1){
+              return posicionesValidas[i][j].dummyPos[2];
+            }else if( pos==2){
+              return posicionesValidas[i][j].dummyPos[3];
+            }else if( pos==3){
+              return posicionesValidas[i][j].dummyPos[4];        
+            }else if( pos==4){
+              return posicionesValidas[i][j].dummyPos[5];        
+            }else if( pos==5){
+              return posicionesValidas[i][j].dummyPos[6];        
+            }else if( pos==6){
+              return posicionesValidas[i][j].dummyPos[7];        
+            }else if( pos==7){
+              return posicionesValidas[i][j].dummyPos[0];       
+            }else if( pos==8){
+              return posicionesValidas[i][j].dummyPos[1];        
+            }else if( pos==9){
+              return posicionesValidas[i][j].dummyPos[8];     
+           }
+          }
+                          
+        }
+
+      }
+    }
+    return false;
+  }
+
+    
        
     window.addEventListener('keydown',check ,false);
       function check(e) {
@@ -193,54 +294,69 @@ var Game = new function() {
         }else if(code==48 && esvalida ) { 
           e.preventDefault();
           console.log("0 presionado");
-          fichaActiva.rot=0;
+        
+          fichaActiva.token=0;
+           //No comprobamos si es valido el monigote porque no hay 
           nuevax=fichaActiva.coord[0]
           nuevay=fichaActiva.coord[1]
       
           var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,0,playerActivo);
-           boards[2].add(nuevaFicha);  
+          boards[2].add(nuevaFicha);  
           /***************************************************
           AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
+              
           **********************************************/  
+             
+          
           esvalida=false;      
           fichaActiva.num =  ((Math.round(Math.random()*23))+1);
           fichaActiva.rot= 0;  
         }else if(code==49 && esvalida ) { 
           e.preventDefault();
           console.log("1 presionado");
-          fichaActiva.token=1;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            if(dummyValido(fichaActiva,1)){
+              fichaActiva.token=1;
+              nuevax=fichaActiva.coord[0]
+              nuevay=fichaActiva.coord[1]
           
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+              var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+               boards[2].add(nuevaFicha);  
+              /***************************************************
+              AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+              
+              **********************************************/
+
+
+              esvalida=false;      
+              fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+              fichaActiva.rot= 0;  
+            }else{
+              alert("Dummy no valid0");
+            }
         }else if(code==50 && esvalida ) { 
           e.preventDefault();
           console.log("2 presionado");
-          fichaActiva.token=2;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,2)){
+            fichaActiva.token=2;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0; 
+            }else{
+               alert("Dummy no valid0");
+            } 
         }else if(code==51 && esvalida ) { 
           e.preventDefault();
           console.log("3 presionado");
+           if(dummyValido(fichaActiva,3)){
           fichaActiva.token=3;
           nuevax=fichaActiva.coord[0]
           nuevay=fichaActiva.coord[1]
@@ -253,103 +369,136 @@ var Game = new function() {
           **********************************************/  
           esvalida=false;      
           fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          fichaActiva.rot= 0;
+          }else{
+               alert("Dummy no valid0");
+          }  
         }else if(code==52 && esvalida ) { 
           e.preventDefault();
           console.log("4 presionado");
           fichaActiva.token=4;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,4)){
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0; 
+
+          }else{
+               alert("Dummy no valid0");
+            }  
         }else if(code==53 && esvalida ) { 
           e.preventDefault();
           console.log("5 presionado");
-          fichaActiva.token=5;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,5)){
+            fichaActiva.token=5;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0;  
+
+          }else{
+               alert("Dummy no valid0");
+            } 
         }else if(code==54 && esvalida ) { 
           e.preventDefault();
           console.log("6 presionado");
-          fichaActiva.token=6;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,6)){
+            fichaActiva.token=6;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0;
+
+          }else{
+               alert("Dummy no valid0");
+            }   
         }else if(code==55 && esvalida ) { 
           e.preventDefault();
           console.log("7 presionado");
-          fichaActiva.token=7;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,7)){
+            fichaActiva.token=7;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0;  
+
+          }else{
+               alert("Dummy no valid0");
+            } 
         }else if(code==56 && esvalida ) { 
           e.preventDefault();
           console.log("8 presionado");
-          fichaActiva.token=8;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,8)){
+            fichaActiva.token=8;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0;
+
+          }else{
+               alert("Dummy no valid0");
+            }   
         }else if(code==57 && esvalida ) { 
           e.preventDefault();
           console.log("9 presionado");
-          fichaActiva.token=9;
-          nuevax=fichaActiva.coord[0]
-          nuevay=fichaActiva.coord[1]
-      
-          var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
-           boards[2].add(nuevaFicha);  
-          /***************************************************
-          AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
-          
-          **********************************************/  
-          esvalida=false;      
-          fichaActiva.num =  ((Math.round(Math.random()*23))+1);
-          fichaActiva.rot= 0;  
+          if(dummyValido(fichaActiva,9)){
+            fichaActiva.token=9;
+            nuevax=fichaActiva.coord[0]
+            nuevay=fichaActiva.coord[1]
+        
+            var nuevaFicha = new ficha(fichaActiva.num,nuevax,nuevay,fichaActiva.rot,fichaActiva.token,playerActivo);
+             boards[2].add(nuevaFicha);  
+            /***************************************************
+            AQUI TENEMOS INFO PARA LOGICA DESPUES DE SELECCIONAR O NO UN MONIGOTE
+            
+            **********************************************/  
+            esvalida=false;      
+            fichaActiva.num =  ((Math.round(Math.random()*23))+1);
+            fichaActiva.rot= 0;
+
+          }else{
+               alert("Dummy no valid0");
+            }  
         }else { 
         pressed=false;
         }
@@ -490,7 +639,7 @@ function TableroRotaciones(posicionesValidas){
        if(i == fichaActiva.rot ){
           for (j=0; j<posicionesValidas[i].length; j++){
 
-            SpriteSheet.draw(ctx,posicionesValidas[i][j].num,posicionesValidas[i][j].coord[0]*altoficha,
+            SpriteSheet.draw(ctx,fichAzul,posicionesValidas[i][j].coord[0]*altoficha,
                               posicionesValidas[i][j].coord[1]*anchoficha);
           }
         }
