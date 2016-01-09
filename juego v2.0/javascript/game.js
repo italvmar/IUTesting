@@ -6,10 +6,12 @@ var endTurn = false;
 
 //Variable del jugador activo
 var playerActivo=1;
+var miPos=1;
 
-//rotacion de la ficha
-rotate = 1;
 
+var numPlayers=5;
+//FLAGS PARA BLOQUEAR LOS COMANDOS 
+var turno= true;
 //La ficha es valida
 var esvalida=false;
 
