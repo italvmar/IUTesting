@@ -17,7 +17,9 @@ if (Meteor.isClient) {
   Session.set('showRotateTile', false);
   Session.set('showFollowers', false);
   Session.set('showPickTile', true);
-  
+  Session.set('firstTurn', true);
+  Session.setDefault('pickTileOK', false);
+
   //var TileList = new Array(); //TileList es un array de objetos Tile
   var Tile = new Object(); //Objeto ficha, sus atributos serán toda la info necesaria de una ficha
   //Tile.Id
@@ -56,10 +58,10 @@ if (Meteor.isClient) {
 
   Tracker.autorun(function () {
     
-    Meteor.call('generateTile', function(err, id_tile) {
-      tileID = id_tile;
+    //Meteor.call('generateTile', function(err, id_tile) {
+      //tileID = id_tile;
 
-    });
+    //});
   });
 /*
   Template.game.generateTile = function(){
@@ -73,6 +75,7 @@ if (Meteor.isClient) {
 	Session.set('showPickTile', true);
 	Session.set('showRotateTile', false);
 	Session.set('showFollowers', false);
+  Session.set('pickTileOK', false);
 	//Pasar info a logica
   }, 
   
@@ -84,8 +87,7 @@ if (Meteor.isClient) {
       tileID = id_tile;
 
     });
-   startGame(tileID); //Hay k adaptar el codigo y cambiar la llamada
-  //Game.loop(Tile.Rot[posRot].TablePos);
+   //startGame(tileID); //Hay k adaptar el codigo y cambiar la llamada
 	  console.log("mi ficaha generada es  : " + tileID);
   }, 
   
@@ -123,11 +125,22 @@ if (Meteor.isClient) {
     'click button#PickTile': function () {
 
 		
-		Template.game.startTurn(); 
+		Template.game.startTurn();
+    var n = FixedTokens.tokens.length;
+     
+    if(Session.get('firstTurn')){
+      startGame(tileID);
+      Session.set('firstTurn', false);
+    }else{
+      boards[2].sprite = tileID;
+    }
+    
+
 		Template.game.sendRotation(); // "enviamos" las posibles posiciones en el tablero para la rotacion por defecto
+
 		Session.set('showRotateTile', true);
 		Session.set('showpickTile', false);
-    //$('button#PickTile').hide();
+    $('button#PickTile').hide();
     },
 
     'click button#RotateTile': function () {
@@ -149,7 +162,13 @@ if (Meteor.isClient) {
 
       // if contador followers > 0
       // then 
+      console.log("primero " + Session.get('pickTileOK'));
 
+      Session.set('pickTileOK', true);
+      console.log("Segundo " + Session.get('pickTileOK'));
+      okTile(Session.get('pickTileOK'));
+      $('button#RotateTile').hide();
+      $('button#Ok').hide();
 		  Session.set('showFollowers', true);
     // else 
     //Template.game.endOfTurn();

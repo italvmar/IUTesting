@@ -35,20 +35,22 @@ var sprites = {
 
 //numero de pieza que toca(numero aleatorio entre 1 y 24)
 //numToken =  ((Math.round(Math.random()*23))+1).toString();
-
+this.okTile = function(p){
+	console.log(p);
+	return p;
+}
 //inicializo el juego
 var startGame = function(numToken) {
-	console.log("Entro aqui");
 	//Fondo
 	Game.setBoard(0,new Background(0,0,1200,1200,"fondo"));
 	//array de fichas fijadas
 	Game.setBoard(1,FixedTokens);
 	//Fijo la ficha central(fila 5,columna 5)
 	FixedTokens.setToken(new Token(5*boxSize,5*boxSize,rotate,"10"));
-	FixedTokens.setToken(new Token(5*boxSize,6*boxSize,1,"valid"));
+	//FixedTokens.setToken(new Token(5*boxSize,6*boxSize,1,"valid"));
 	//Ficha que se mueve
 	Game.setBoard(2,new CurrentToken(1005,0,rotate,numToken));
 }
 window.addEventListener("load", function() {
-	Game.initialize("game",sprites,startGame);
+	Game.initialize("game",sprites,startGame,okTile);
 });

@@ -5,6 +5,7 @@ var boxSize = 100*n;
 //contiene todos los posibles objetos a dibujar
 var boards = [];
 
+
 //------------------------------------------------
 var SpriteSheet = new function() {
   this.map = { };
@@ -23,19 +24,23 @@ var SpriteSheet = new function() {
 //----------------------------------------------------------------------------------
 var Game = new function() {
 
-  this.initialize = function(canvasElementId,sprite_data,callback) {
-
+  this.initialize = function(canvasElementId,sprite_data,callback,PickTileOK) {
+    console.log("En el initialize  " + PickTileOK);
     this.canvas = document.getElementById(canvasElementId);
     this.width = this.canvas.width;
     this.height= this.canvas.height;
 
     this.ctx = this.canvas.getContext && this.canvas.getContext('2d');
     if(!this.ctx) { return alert("Please upgrade your browser to play"); }
-    this.loop(boxSize,n);
+    if(PickTileOK){
+      this.loop();
+    }
+    
     SpriteSheet.load(sprite_data,callback);
   };
 
   this.loop = function() {
+    //console.log("En el loop  " + PickTileOK);
 
     for(var i=0, len = boards.length;i<len;i++) {
       if(boards[i]) {
@@ -107,13 +112,12 @@ function CurrentToken(x,y,rotate,sprite){
       return coords;
   };
 
-  //capturo evento click, crea un objeto Token con coordenadas x e y ya ajustadas y lo mete en el array de fichas fijas
-  Game.canvas.addEventListener("click", function(e){
+  function fix(e){
     var coord = calculateCoord(e.clientX,e.clientY);
     FixedTokens.setToken(new Token(coord.x,coord.y,boards[2].rotate,boards[2].sprite));
-    //nueva ficha,cambio el atributo sprite de CurrentToken
-    boards[2].sprite = ((Math.round(Math.random()*23))+1).toString();; 
-  });
+  };
+  //capturo evento click, crea un objeto Token con coordenadas x e y ya ajustadas y lo mete en el array de fichas fijas
+  Game.canvas.addEventListener("click", function(e){fix(e)});
   
 };
 
@@ -129,6 +133,9 @@ var FixedTokens = new function(){
       }  
     }
   };
+  this.num_token = function(){
+    return this.tokens.length;
+  }
   //meter ficha en la coleccion de fichas fijadas
   this.setToken = function(token) { this.tokens.push(token); };
 };
