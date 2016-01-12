@@ -35,10 +35,7 @@ var sprites = {
 
 //numero de pieza que toca(numero aleatorio entre 1 y 24)
 //numToken =  ((Math.round(Math.random()*23))+1).toString();
-this.okTile = function(p){
-	console.log(p);
-	return p;
-}
+
 //inicializo el juego
 var startGame = function(numToken) {
 	//Fondo
@@ -49,8 +46,11 @@ var startGame = function(numToken) {
 	FixedTokens.setToken(new Token(5*boxSize,5*boxSize,rotate,"10"));
 	//FixedTokens.setToken(new Token(5*boxSize,6*boxSize,1,"valid"));
 	//Ficha que se mueve
+
+	//console.log("genero ficha que se mueve");
 	Game.setBoard(2,new CurrentToken(1005,0,rotate,numToken));
+	//console.log("mi ficha es: "+ numToken);
 }
 window.addEventListener("load", function() {
-	Game.initialize("game",sprites,startGame,okTile);
+	Game.initialize("game",sprites,startGame);
 });

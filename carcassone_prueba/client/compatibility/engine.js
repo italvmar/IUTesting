@@ -14,7 +14,7 @@ var SpriteSheet = new function() {
     this.map = spriteData;
     this.image = new Image();
     this.image.onload = callback;
-    this.image.src = 'imagenes/sprite.png';
+    this.image.src = 'sprite.png';
   };
   this.draw = function(ctx,sprite,x,y,w,h) {
     var s = this.map[sprite];
@@ -24,17 +24,14 @@ var SpriteSheet = new function() {
 //----------------------------------------------------------------------------------
 var Game = new function() {
 
-  this.initialize = function(canvasElementId,sprite_data,callback,PickTileOK) {
-    console.log("En el initialize  " + PickTileOK);
+  this.initialize = function(canvasElementId,sprite_data,callback) {
     this.canvas = document.getElementById(canvasElementId);
     this.width = this.canvas.width;
     this.height= this.canvas.height;
 
     this.ctx = this.canvas.getContext && this.canvas.getContext('2d');
     if(!this.ctx) { return alert("Please upgrade your browser to play"); }
-    if(PickTileOK){
-      this.loop();
-    }
+    this.loop();
     
     SpriteSheet.load(sprite_data,callback);
   };
@@ -96,10 +93,10 @@ function CurrentToken(x,y,rotate,sprite){
     SpriteSheet.draw(ctx,this.sprite,this.dx,this.dy,boxSize,boxSize);
   }
 
-  this.step = function(board) {
+  this.step = function() {
     Game.canvas.addEventListener("mousemove", function(e){
-      board.dx = e.clientX-boxSize/2;
-      board.dy = e.clientY-boxSize/2;
+      boards[2].dx = e.clientX-boxSize/2;
+      boards[2].dy = e.clientY-((boxSize/2)+158);
     });
   }
 
@@ -108,7 +105,7 @@ function CurrentToken(x,y,rotate,sprite){
       var coords = {};
       //divido la coordenada entre el tamaño de una ficha,cojo la parte entera y la multiplico por el tamaño de la ficha
       coords.x = (Math.floor(x/boxSize))*boxSize;
-      coords.y = (Math.floor(y/boxSize))*boxSize;
+      coords.y = (Math.floor((y-158)/boxSize))*boxSize;
       return coords;
   };
 

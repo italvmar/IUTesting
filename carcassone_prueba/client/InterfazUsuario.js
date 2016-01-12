@@ -85,10 +85,9 @@ if (Meteor.isClient) {
 	//tileID = Template.game.generateTile();
     Meteor.call('generateTile', function(err, id_tile) {
       tileID = id_tile;
-
     });
    //startGame(tileID); //Hay k adaptar el codigo y cambiar la llamada
-	  console.log("mi ficaha generada es  : " + tileID);
+	  console.log("mi ficha generada es  : " + tileID);
   }, 
   
   Template.game.endOfGame = function(){
@@ -126,7 +125,6 @@ if (Meteor.isClient) {
 
 		
 		Template.game.startTurn();
-    var n = FixedTokens.tokens.length;
      
     if(Session.get('firstTurn')){
       startGame(tileID);
