@@ -143,6 +143,20 @@ var Game = new function() {
       }
       return valida;
     }
+
+     game.addEventListener('mousemove',actPosition ,false);
+    function actPosition(evt) {
+      if(!esvalida){
+        var pos = getMousePos(canvas, evt);
+
+        fichaActiva.coord[0]=pos.x   - anchoficha/2;
+        fichaActiva.coord[1]=pos.y  - altoficha/2;
+
+        /*console.log("scrolls ofset")
+        console.log(rect.left);
+        console.log(rect.top);*/
+      }
+    } 
       
       game.addEventListener("click", getPosition, false);
 
@@ -655,27 +669,15 @@ function TableroActiva(fichaActiva){
 
   this.step = function(x,y) {
 
-    function getMousePos(canvas, evt) {
+    /*function getMousePos(canvas, evt) {
         
         return {
           x: evt.clientX - rect.left,
           y: evt.clientY - rect.top
         };
-    }    
+    }  */  
 
-    game.addEventListener('mousemove',actPosition ,false);
-    function actPosition(evt) {
-      if(!esvalida){
-        var pos = getMousePos(canvas, evt);
-
-        fichaActiva.coord[0]=pos.x   - anchoficha/2;
-        fichaActiva.coord[1]=pos.y  - altoficha/2;
-
-        /*console.log("scrolls ofset")
-        console.log(rect.left);
-        console.log(rect.top);*/
-      }
-    }        
+          
   }
 
 }
